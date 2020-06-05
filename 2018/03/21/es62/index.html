@@ -1,0 +1,741 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="Set与Map对象属性的类型必须为字符串,非字符串值会在内部被转换为字符串。属性为对象时被转换为”[object Object]” 。JS存在in运算符，若属性存在于对象中，就会返回true而无须读取对象的属性值。不过，in运算符会搜索对象的原型，这使得它只有在处理原型为null的对象时才是安全的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解ES6（2）">
+<meta property="og:url" content="https://1072843095.github.io/2018/03/21/es62/index.html">
+<meta property="og:site_name" content="还没想好">
+<meta property="og:description" content="Set与Map对象属性的类型必须为字符串,非字符串值会在内部被转换为字符串。属性为对象时被转换为”[object Object]” 。JS存在in运算符，若属性存在于对象中，就会返回true而无须读取对象的属性值。不过，in运算符会搜索对象的原型，这使得它只有在处理原型为null的对象时才是安全的。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://1072843095.github.io/uploads/yield.png">
+<meta property="og:image" content="https://1072843095.github.io/uploads/error.png">
+<meta property="og:updated_time" content="2019-03-27T04:44:39.815Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解ES6（2）">
+<meta name="twitter:description" content="Set与Map对象属性的类型必须为字符串,非字符串值会在内部被转换为字符串。属性为对象时被转换为”[object Object]” 。JS存在in运算符，若属性存在于对象中，就会返回true而无须读取对象的属性值。不过，in运算符会搜索对象的原型，这使得它只有在处理原型为null的对象时才是安全的。">
+<meta name="twitter:image" content="https://1072843095.github.io/uploads/yield.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1072843095.github.io/2018/03/21/es62/">
+
+
+
+
+
+  <title> 深入理解ES6（2） | 还没想好 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">还没想好</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">也还没想好</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://1072843095.github.io/2018/03/21/es62/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chris Han">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/head.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="还没想好">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                深入理解ES6（2）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T15:45:19+08:00">
+                2018-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Set与Map"><a href="#Set与Map" class="headerlink" title="Set与Map"></a>Set与Map</h3><p>对象属性的类型必须为字符串,非字符串值会在内部被转换为字符串。属性为对象时被转换为”[object Object]” 。<br>JS存在in运算符，若属性存在于对象中，就会返回true而无须读取对象的属性值。不过，in运算符会搜索对象的原型，这使得它只有在处理原型为null的对象时才是安全的。<br><a id="more"></a></p>
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><p>这是一种无重复值的有序列表。Set允许对它包含的数据进行快速访问，从而增加了一个追踪离散值的更有效方式。<br>1.Set使用new Set()来创建，而调用add()方法就能向Set中添加项目，检查size属性还能查看其中包含有多少项。你还可以向Set添加多个对象，它们不会被合并为同一项。<br>2.在 Set 内部的比较使用了Object.is()方法，来判断两个值是否相等，唯一的例外是+0与-0在Set中被判断为是相等的。<br>3.如果add()方法用相同值进行了多次调用，那么在第一次之后的调用实际上会被忽略。你可以使用数组来初始化一个Set，并且Set构造器会确保不重复地使用这些值。<br>4.Set构造器实际上可以接收任意可迭代对象作为参数。能使用数组是因为它们默认就是可迭代的，Set与Map也是一样。Set构造器会使用迭代器来提取参数中的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let set = new Set();</span><br><span class="line">set.add(5);</span><br><span class="line">set.add(&quot;5&quot;);</span><br><span class="line">set.add(5); // 重复了，该调用被忽略</span><br><span class="line">console.log(set.size); // 2</span><br><span class="line"></span><br><span class="line">let set = new Set([1, 2, 3, 4, 5, 5, 5, 5]);</span><br><span class="line">console.log(set.size); // 5</span><br></pre></td></tr></table></figure><br>5.使用has()方法来测试某个值是否存在于Set中，使用delete()方法来移除单个值，或调用clear()方法来将所有值从Set中移除。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let set = new Set();</span><br><span class="line">set.add(5);</span><br><span class="line">set.add(&quot;5&quot;);</span><br><span class="line">console.log(set.has(5)); // true</span><br><span class="line">set.delete(5);</span><br><span class="line">console.log(set.has(5)); // false</span><br><span class="line">console.log(set.size); // 1</span><br><span class="line">set.clear();</span><br><span class="line">console.log(set.has(&quot;5&quot;)); // false</span><br><span class="line">console.log(set.size); // 0</span><br></pre></td></tr></table></figure><br>6.forEach()方法会被传递一个回调函数，该回调接受三个参数：1. Set 中下个位置的值；2. 与第一个参数相同的值；3. 目标 Set 自身。如果想在回调函数中使用this，你可以给forEach()传入一个this值作为第二个参数。也可以使用箭头函数来达到相同效果，而无须传入第二个参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">let set = new Set([1, 2]);</span><br><span class="line">let processor = &#123;</span><br><span class="line">	output(value) &#123;</span><br><span class="line">		console.log(value);</span><br><span class="line">	&#125;,</span><br><span class="line">	process(dataSet) &#123;</span><br><span class="line">		dataSet.forEach(function(value) &#123;</span><br><span class="line">			this.output(value);</span><br><span class="line">		&#125;, this);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">processor.process(set);</span><br><span class="line"></span><br><span class="line">//使用箭头函数</span><br><span class="line">let set = new Set([1, 2]);</span><br><span class="line">let processor = &#123;</span><br><span class="line">	output(value) &#123;</span><br><span class="line">		console.log(value);</span><br><span class="line">	&#125;,</span><br><span class="line">	process(dataSet) &#123;</span><br><span class="line">		dataSet.forEach((value) =&gt; this.output(value));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">processor.process(set);</span><br></pre></td></tr></table></figure><br>7.将数组转换为Set相当容易，因为可以将数组传递给Set构造器；而使用扩展运算符也能简单地将Set转换回数组。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let set = new Set([1, 2, 3, 3, 3, 4, 5]),</span><br><span class="line">array = [...set];</span><br><span class="line">console.log(array); // [1,2,3,4,5]</span><br></pre></td></tr></table></figure></p>
+<h4 id="WeakSet"><a href="#WeakSet" class="headerlink" title="WeakSet"></a>WeakSet</h4><p>1.该类型只允许存储对象弱引用，而不能存储基本类型的值。<br>2.包含add()方法、has()方法以及delete()方法。<br>3.对于WeakSet的实例，若调用add()方法时传入了非对象的参数，就会抛出错误（has()或delete()则会在传入了非对象的参数时返回false）；<br>4.Weak Set 不可迭代，因此不能被用在for-of循环中；<br>5.Weak Set 无法暴露出任何迭代器（例如keys()与values()方法），因此没有任何编程手段可用于判断Weak Set的内容；<br>6.Weak Set 没有forEach()方法；<br>7.Weak Set 没有size属性。<br>8.clear()方法不存在</p>
+<h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><p>ES6的Map类型是键值对的有序列表，而键和值都可以是任意类型。<br>1.调用set()方法并给它传递一个键与一个关联的值，来给Map添加项；此后使用键名来调用get()方法便能提取对应的值。如果任意一个键不存在于 Map 中，则get()方法就会返回特殊值undefined。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let map = new Map();</span><br><span class="line">map.set(&quot;title&quot;, &quot;Understanding ES6&quot;);</span><br><span class="line">map.set(&quot;year&quot;, 2016);</span><br><span class="line">console.log(map.get(&quot;title&quot;)); // &quot;Understanding ES6&quot;</span><br><span class="line">console.log(map.get(&quot;year&quot;)); // 2016</span><br></pre></td></tr></table></figure><br>2.has(key),delete(key),clear(),拥有size属性，用于指明包含了多少个键值对。<br>3.初始化：你能将数组传递给Map构造器，以便使用数据来初始化一个 Map。该数组中的每一项也必须是数组，内部数组的首个项会作为键，第二项则为对应值。因此整个Map 就被这些双项数组所填充。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let map = new Map([[&quot;name&quot;, &quot;Nicholas&quot;], [&quot;age&quot;, 25]]);</span><br><span class="line">console.log(map.has(&quot;name&quot;)); // true</span><br><span class="line">console.log(map.get(&quot;name&quot;)); // &quot;Nicholas&quot;</span><br><span class="line">console.log(map.has(&quot;age&quot;)); // true</span><br><span class="line">console.log(map.get(&quot;age&quot;)); // 25</span><br><span class="line">console.log(map.size); // 2</span><br></pre></td></tr></table></figure><br>4.forEach()它接受一个能接收三个参数的回调函数：1. Map 中下个位置的值；2. 该值所对应的键；3. 目标 Map 自身。<br>5.你也可以给forEach()提供第二个参数来指定回调函数中的this值，其行为与Set版本的forEach()一致。</p>
+<h4 id="WeakMap"><a href="#WeakMap" class="headerlink" title="WeakMap"></a>WeakMap</h4><p>在 Weak Map 中，所有的键都必须是对象（尝试使用非对象的键会抛出错误），而且这些对象都是弱引用，不会干扰垃圾回收。当 Weak Map中的键在 Weak Map之外不存在引用时，该键值对会被移除。<br>1.Weak Map的最佳用武之地，就是在浏览器中创建一个关联到特定DOM元素的对象。<br>2.必须注意的是，Weak Map的键才是弱引用，而值不是。在Weak Map的值中存储对象会阻止垃圾回收，即使该对象的其他引用已全都被移除。<br>3.ES6的WeakMap类型是键值对的无序列表，其中键必须是非空的对象，值则允许是任意类型。<br>4.set(),get(),has(),delete(),<br>5.没有size属性,clear()方法不存在,不能使用forEach()方法<br>6.Weak Map 的一个实际应用就是在对象实例中存储私有数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let Person = (function() &#123;</span><br><span class="line">	let privateData = new WeakMap();</span><br><span class="line">	function Person(name) &#123;</span><br><span class="line">		privateData.set(this, &#123; name: name &#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	Person.prototype.getName = function() &#123;</span><br><span class="line">		return privateData.get(this).name;</span><br><span class="line">	&#125;;</span><br><span class="line">	return Person;</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure></p>
+<h3 id="迭代器与生成器"><a href="#迭代器与生成器" class="headerlink" title="迭代器与生成器"></a>迭代器与生成器</h3><h4 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h4><p>迭代器是被设计专用于迭代的对象，带有特定接口。所有的迭代器对象都拥有next()方法，会返回一个结果对象。该结果对象有两个属性：对应下一个值的value，以及一个布尔类型的done，其值为true时表示没有更多值可供使用。迭代器持有一个指向集合位置的内部指针，每当调用了next()方法，迭代器就会返回相应的下一个值。<br>若你在最后一个值返回后再调用next()，所返回的done属性值会是true，并且value属性值会是迭代器自身的返回值（return value，即使用return语句明确返回的值）。该“返回值”不是原数据集的一部分，却会成为相关数据的最后一个片段，或在迭代器未提供返回值的时候使用undefined。迭代器自身的返回值类似于函数的返回值，是向调用者返回信息的最后手段。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//在 ES5 中创建一个迭代器</span><br><span class="line">function createIterator(items) &#123;</span><br><span class="line">	var i = 0;</span><br><span class="line">	return &#123;</span><br><span class="line">		next: function() &#123;</span><br><span class="line">			var done = (i &gt;= items.length);</span><br><span class="line">			var value = !done ? items[i++] : undefined;</span><br><span class="line">			return &#123;</span><br><span class="line">				done: done,</span><br><span class="line">				value: value</span><br><span class="line">			&#125;;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line">var iterator = createIterator([1, 2, 3]);</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 1, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 2, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 3, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: undefined, done: true &#125;&quot;</span><br><span class="line">// 之后的所有调用</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: undefined, done: true &#125;&quot;</span><br></pre></td></tr></table></figure><br>幸好， ES6 还提供了生成器，让创建迭代器对象变得更简单。</p>
+<h4 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h4><p>生成器（generator）是能返回一个迭代器的函数。生成器函数由放在function关键字之后的一个星号（<em>）来表示，并能使用新的yield关键字。将星号紧跟在function关键字之后，或是在中间留出空格，都是没问题的。yield关键字也是ES6新增的，指定了迭代器在被next()方法调用时应当按顺序返回的值。yield  关键字可以和值或是表达式一起使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 生成器</span><br><span class="line">function *createIterator() &#123;</span><br><span class="line">	yield 1;</span><br><span class="line">	yield 2;</span><br><span class="line">	yield 3;</span><br><span class="line">&#125;</span><br><span class="line">// 生成器能像正规函数那样被调用，但会返回一个迭代器</span><br><span class="line">let iterator = createIterator();</span><br><span class="line">console.log(iterator.next().value); // 1</span><br><span class="line">console.log(iterator.next().value); // 2</span><br><span class="line">console.log(iterator.next().value); // 3</span><br></pre></td></tr></table></figure><br>1.生成器函数最有意思的方面可能就是它们会在每个yield语句后停止执行。例如，此代码中yield 1执行后，该函数将不会再执行任何操作，直到迭代器的next()方法被调用，此时才继续执行yield 2。<br>2.yield关键字只能用在生成器内部，用于其他任意位置都是语法错误，即使在生成器内部的函数中也不行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function *createIterator(items) &#123;</span><br><span class="line">	items.forEach(function(item) &#123;</span><br><span class="line">		// 语法错误</span><br><span class="line">		yield item + 1;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">尽管yield严格位于createIterator()内部，此代码仍然有语法错误，因为yield无法穿越函数边界。从这点上来说，yield与return非常相似，在一个被嵌套的函数中无法将值返回给包含它的函数。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure><br>3.你可以使用函数表达式来创建一个生成器，只要在function关键字与圆括号之间使用一个星号（</em>）即可。不能将箭头函数创建为生成器。<br>4.由于生成器就是函数，因此也可以被添加到对象中。例如，你可以在ES5风格的对象字面量中使用函数表达式来创建一个生成器。你也可以使用ES6方法的速记法，只要在方法名之前加上一个星号（*）。</p>
+<h4 id="可迭代对象与-for-of-循环"><a href="#可迭代对象与-for-of-循环" class="headerlink" title="可迭代对象与 for-of 循环"></a>可迭代对象与 for-of 循环</h4><p>可迭代对象（iterable）是包含Symbol.iterator属性的对象。这个Symbol.iterator知名符号定义了为指定对象返回迭代器的函数。在ES6中，所有的集合对象（数组、Set与Map）以及字符串都是可迭代对象，因此它们都被指定了默认的迭代器。可迭代对象被设计用于与ES新增的for-of循环配合使用。<br>1.生成器创建的所有迭代器都是可迭代对象，因为生成器默认就会为Symbol.iterator属性赋值。<br>2.for-of循环首先在JS引擎后台Symbol.iterator方法，获取了一个迭代器，在循环每次执行时会调用可迭代对象的next()方法，并将结果对象的value值存储在一个变量上。循环过程会持续到结果对象的done属性变成true为止。<br>3.在不可迭代对象、null或undefined上使用for-of语句，会抛出错误。<br>4.开发者自定义对象默认情况下不是可迭代对象，但你可以创建一个包含生成器的Symbol.iterator属性，让它们成为可迭代对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let collection = &#123;</span><br><span class="line">	items: [],</span><br><span class="line">	*[Symbol.iterator]() &#123;    //注意名称之前依然有星号</span><br><span class="line">		for (let item of this.items) &#123;</span><br><span class="line">			yield item;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">collection.items.push(1);</span><br><span class="line">collection.items.push(2);</span><br><span class="line">collection.items.push(3);</span><br><span class="line">for (let x of collection) &#123;</span><br><span class="line">	console.log(x);</span><br><span class="line">&#125;</span><br><span class="line">输出：</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td></tr></table></figure></p>
+<h4 id="内置的迭代器"><a href="#内置的迭代器" class="headerlink" title="内置的迭代器"></a>内置的迭代器</h4><p>1.数组、Map与Set :<br>(1)entries()返回一个包含键值对的迭代器；<br>会在每次next()被调用时返回一个双项数组，此数组代表了集合中每个元素的键与值：对于数组来说，第一项是数值索引；对于Set，第一项也是值（因为它的值也会被视为键）；对于Map，第一项就就是键。<br>(2)values()返回一个包含集合中的值的迭代器；<br>(3)keys()返回一个包含集合中的键的迭代器。<br>能返回集合中的每一个键。对于数组来说，它只返回了数值类型的键，永不返回数组的其他自有属性；Set的键与值是相同的，因此它的keys()与values()返回了相同的迭代器；对于Map，keys()迭代器返回了每个不重复的键。<br>for-in循环会迭代所有属性而不仅是数值索引。<br>(4)当for-of循环没有显式指定迭代器时，每种集合类型都有一个默认的迭代器供循环使用。values()方法是数组与Set的默认迭代器，而entries()方法则是Map的默认迭代器。<br>(5)Weak Set与Weak Map并未拥有内置的迭代器，使用弱引用意味着无法获知这些集合内部到底有多少个值，同时意味着没有方法可以迭代这些值。<br>(6)Map 默认迭代器的行为有助于在for-of循环中使用解构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let data = new Map();</span><br><span class="line">data.set(&quot;title&quot;, &quot;Understanding ES6&quot;);</span><br><span class="line">data.set(&quot;format&quot;, &quot;ebook&quot;);</span><br><span class="line">// 与使用 data.entries() 相同</span><br><span class="line">for (let [key, value] of data) &#123;</span><br><span class="line">	console.log(key + &quot;=&quot; + value);</span><br><span class="line">&#125;</span><br><span class="line">//此代码中的for-of循环使用了数组解构，来将Map中的每个项存入key与value变量。</span><br></pre></td></tr></table></figure><br>2.字符串的迭代器：字符串默认迭代器配合for-of循环，能处理字符而不是码元，会得到更加合适的输出。<br>3.NodeList 的迭代器： for-of循环迭代<br>4.扩展运算符与非数组的可迭代对象：扩展运算符能作用于所有可迭代对象，并且会使用默认迭代器来判断需要使用哪些值。</p>
+<h4 id="迭代器高级功能"><a href="#迭代器高级功能" class="headerlink" title="迭代器高级功能"></a>迭代器高级功能</h4><p>1.传递参数给迭代器<br>当一个参数被传递给next()方法时，该参数就会成为生成器内部yield语句的值。这种能力对于更多高级功能（例如异步编程）来说是非常重要的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function *createIterator() &#123;</span><br><span class="line">	let first = yield 1;</span><br><span class="line">	let second = yield first + 2; // 4 + 2</span><br><span class="line">	yield second + 3; // 5 + 3</span><br><span class="line">&#125;</span><br><span class="line">let iterator = createIterator();</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 1, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next(4)); // &quot;&#123; value: 6, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next(5)); // &quot;&#123; value: 8, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: undefined, done: true &#125;&quot;</span><br></pre></td></tr></table></figure><br><img src="/uploads/yield.png" title="在一个生成器内部的代码执行"><br>对于next()的首次调用是一个特殊情况，传给它的任意参数都会被忽略。由于传递给next()的参数会成为yield语句的值，该yield语句指的是上次生成器中断执行处的语句；而next()方法第一次被调用时，生成器函数才刚刚开始执行，没有所谓的“上一次中断处的yield语句”可供赋值。因此在第一次调用next()时，不存在任何向其传递参数的理由。<br>2.在迭代器中抛出错误<br>能传递给迭代器的不仅是数据，还可以是错误条件。迭代器可以选择实现一个throw()方法，用于指示迭代器应在恢复执行时抛出一个错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function *createIterator() &#123;</span><br><span class="line">	let first = yield 1;</span><br><span class="line">	let second = yield first + 2; // yield 4 + 2 ，然后抛出错误</span><br><span class="line">	yield second + 3; // 永不会被执行</span><br><span class="line">&#125;</span><br><span class="line">let iterator = createIterator();</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 1, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next(4)); // &quot;&#123; value: 6, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.throw(new Error(&quot;Boom&quot;))); // 从生成器中抛出了错误</span><br></pre></td></tr></table></figure><br><img src="/uploads/error.png" title="在一个生成器内部抛出错误"><br>可以在生成器内部使用一个try-catch块来捕捉这种错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function *createIterator() &#123;</span><br><span class="line">	let first = yield 1;</span><br><span class="line">	let second;</span><br><span class="line">	try &#123;</span><br><span class="line">		second = yield first + 2; // yield 4 + 2 ，然后抛出错误</span><br><span class="line">	&#125; catch (ex) &#123;</span><br><span class="line">		second = 6; // 当出错时，给变量另外赋值</span><br><span class="line">	&#125;</span><br><span class="line">	yield second + 3;</span><br><span class="line">&#125;</span><br><span class="line">let iterator = createIterator();</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 1, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next(4)); // &quot;&#123; value: 6, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.throw(new Error(&quot;Boom&quot;))); // &quot;&#123; value: 9, done: false &#125;&quot;    throw()方法就像next()方法一样返回了一个结果对象。</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: undefined, done: true &#125;&quot;</span><br></pre></td></tr></table></figure><br>next()方法指示迭代器继续执行（可能会带着给定的值），而throw()方法则指示迭代器通过抛出一个错误继续执行。在调用点之后会发生什么，根据生成器内部的代码来决定。<br>3.生成器的Return语句<br>由于生成器是函数，你可以在它内部使用return语句，既可以让生成器早一点退出执行，也可以指定在next()方法最后一次调用时的返回值。在return语句中指定的任意值都只会在结果对象中出现一次，此后value字段就会被重置为undefined。<br>扩展运算符与for-of循环会忽略return语句所指定的任意值。一旦它们看到done的值为true，它们就会停止操作而不会读取对应的value值。不过，在生成器进行委托时，迭代器的返回值会非常有用。<br>4.生成器委托<br>生成器可以用星号（<em>）配合yield这一特殊形式来委托其他的迭代器。正如生成器的定义，星号出现在何处是不重要的，只要落在yield关键字与生成器函数名之间即可。生成器委托也能让你进一步使用生成器的返回值。这是访问这些返回值的最简单方式，并且在执行复杂任务时会非常有用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function *createNumberIterator() &#123;</span><br><span class="line">	yield 1;</span><br><span class="line">	yield 2;</span><br><span class="line">	return 3;</span><br><span class="line">&#125;</span><br><span class="line">function *createRepeatingIterator(count) &#123;</span><br><span class="line">	for (let i=0; i &lt; count; i++) &#123;</span><br><span class="line">		yield &quot;repeat&quot;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">function *createCombinedIterator() &#123;</span><br><span class="line">	let result = yield *createNumberIterator();</span><br><span class="line">	yield *createRepeatingIterator(result);</span><br><span class="line">&#125;</span><br><span class="line">var iterator = createCombinedIterator();</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 1, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: 2, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: &quot;repeat&quot;, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: &quot;repeat&quot;, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: &quot;repeat&quot;, done: false &#125;&quot;</span><br><span class="line">console.log(iterator.next()); // &quot;&#123; value: undefined, done: true &#125;&quot;</span><br></pre></td></tr></table></figure><br>你可以直接在字符串上使用yield </em>（例如yield * “hello”），字符串的默认迭代器会被使用。<br>5.异步任务运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">function run(taskDef) &#123;</span><br><span class="line">	// 创建迭代器，让它在别处可用</span><br><span class="line">	let task = taskDef();</span><br><span class="line">	// 启动任务</span><br><span class="line">	let result = task.next();</span><br><span class="line">	// 递归使用函数来保持对 next() 的调用</span><br><span class="line">	function step() &#123;</span><br><span class="line">		// 如果还有更多要做的</span><br><span class="line">		if (!result.done) &#123;</span><br><span class="line">			if (typeof result.value === &quot;function&quot;) &#123;</span><br><span class="line">				result.value(function(err, data) &#123;</span><br><span class="line">					if (err) &#123;</span><br><span class="line">						result = task.throw(err);</span><br><span class="line">						return;</span><br><span class="line">					&#125;</span><br><span class="line">					result = task.next(data);</span><br><span class="line">					step();</span><br><span class="line">				&#125;);</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				result = task.next(result.value);</span><br><span class="line">				step();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	// 开始处理过程</span><br><span class="line">	step();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let fs = require(&quot;fs&quot;);</span><br><span class="line">function readFile(filename) &#123;</span><br><span class="line">	return function(callback) &#123;</span><br><span class="line">		fs.readFile(filename, callback);</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">run(function*() &#123;</span><br><span class="line">	let contents = yield readFile(&quot;config.json&quot;);</span><br><span class="line">	doSomethingWith(contents);</span><br><span class="line">	console.log(&quot;Done&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>当然，这些范例中所使用的模式也有缺点：你无法完全确认一个能返回函数的函数是异步的。promise 提供了更强有力的方式来调度异步任务。</p>
+<h3 id="js中的类"><a href="#js中的类" class="headerlink" title="js中的类"></a>js中的类</h3><h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4><p>1.类声明以class关键字开始，其后是类的名称；剩余部分的语法看起来就像对象字面量中的方法简写，并且在方法之间不需要使用逗号。</p>
+<ol start="2">
+<li>类表达式被设计用于变量声明，或可作为参数传递给函数。类表达式不需要在class关键字后使用标识符。除了语法差异，类表达式的功能等价于类声明。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class PersonClass &#123;          //类声明</span><br><span class="line">//let PersonClass = class &#123;  //匿名的类表达式</span><br><span class="line">//let PersonClass = class PersonClass2 &#123;   //具名类表达式</span><br><span class="line">	// 等价于 PersonType 构造器</span><br><span class="line">	constructor(name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	// 等价于 PersonType.prototype.sayName</span><br><span class="line">	sayName() &#123;</span><br><span class="line">		console.log(this.name);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">let person = new PersonClass(&quot;Nicholas&quot;);</span><br><span class="line">person.sayName(); // 输出 &quot;Nicholas&quot;</span><br><span class="line">console.log(person instanceof PersonClass); // true</span><br><span class="line">console.log(person instanceof Object); // true</span><br><span class="line">console.log(typeof PersonClass); // &quot;function&quot;</span><br><span class="line">console.log(typeof PersonClass.prototype.sayName); // &quot;function&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="类与自定义类型之间的区别"><a href="#类与自定义类型之间的区别" class="headerlink" title="类与自定义类型之间的区别"></a>类与自定义类型之间的区别</h4><ol>
+<li>类声明不会被提升，这与函数定义不同。类声明的行为与let相似，因此在程序的执行到达声明处之前，类会存在于暂时性死区内。</li>
+<li>类声明中的所有代码会自动运行在严格模式下，并且也无法退出严格模式。</li>
+<li>类的所有方法都是不可枚举的，这是对于自定义类型的显著变化，后者必须用Object.defineProperty()才能将方法改变为不可枚举。</li>
+<li>类的所有方法内部都没有[[Construct]]，因此使用new来调用它们会抛出错误。</li>
+<li>调用类构造器时不使用new，会抛出错误。</li>
+<li>试图在类的方法内部重写类名，会抛出错误。只有在类的内部，类名才被视为是使用const声明的。这意味着你可以在外部重写类名，但不能在类的方法内部这么做。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 直接等价于 PersonClass</span><br><span class="line">let PersonType2 = (function() &#123;</span><br><span class="line">	&quot;use strict&quot;;</span><br><span class="line">	const PersonType2 = function(name) &#123;</span><br><span class="line">	//const PersonClass2 = function(name) &#123;  //具名类表达式</span><br><span class="line">		// 确认函数被调用时使用了 new</span><br><span class="line">		if (typeof new.target === &quot;undefined&quot;) &#123;</span><br><span class="line">			throw new Error(&quot;Constructor must be called with new.&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	Object.defineProperty(PersonType2.prototype, &quot;sayName&quot;, &#123;</span><br><span class="line">		value: function() &#123;</span><br><span class="line">		// 确认函数被调用时没有使用 new</span><br><span class="line">		if (typeof new.target !== &quot;undefined&quot;) &#123;</span><br><span class="line">			throw new Error(&quot;Method cannot be called with new.&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		console.log(this.name);</span><br><span class="line">		&#125;,</span><br><span class="line">		enumerable: false,</span><br><span class="line">		writable: true,</span><br><span class="line">		configurable: true</span><br><span class="line">	&#125;);</span><br><span class="line">	return PersonType2;</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="作为一级公民的类"><a href="#作为一级公民的类" class="headerlink" title="作为一级公民的类"></a>作为一级公民的类</h4><p>1.在编程中，能被当作值来使用的就称为一级公民（first-class citizen），意味着它能作为参数传给函数、能作为函数返回值、能用来给变量赋值。<br>2.类表达式的另一个有趣用途是立即调用类构造器，以创建单例（Singleton）。为此，你必须使用new来配合类表达式，并在表达式后面添加括号。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let person = new class &#123;</span><br><span class="line">	constructor(name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	sayName() &#123;</span><br><span class="line">		console.log(this.name);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;(&quot;Nicholas&quot;);</span><br><span class="line">person.sayName(); // &quot;Nicholas&quot;</span><br></pre></td></tr></table></figure></p>
+<h4 id="访问器属性"><a href="#访问器属性" class="headerlink" title="访问器属性"></a>访问器属性</h4><p>自有属性需要在类构造器中创建，而类还允许你在原型上定义访问器属性(不可枚举)。为了创建一个getter，要使用get关键字，并要与后方标识符之间留出空格；创建setter用相同方式，只是要换用set关键字。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">class CustomHTMLElement &#123;</span><br><span class="line">	constructor(element) &#123;</span><br><span class="line">		this.element = element;</span><br><span class="line">	&#125;</span><br><span class="line">	get html() &#123;</span><br><span class="line">		return this.element.innerHTML;</span><br><span class="line">	&#125;</span><br><span class="line">	set html(value) &#123;</span><br><span class="line">		this.element.innerHTML = value;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var descriptor = Object.getOwnPropertyDescriptor(CustomHTMLElement.prototype, &quot;html&quot;);</span><br><span class="line">console.log(&quot;get&quot; in descriptor); // true</span><br><span class="line">console.log(&quot;set&quot; in descriptor); // true</span><br><span class="line">console.log(descriptor.enumerable); // false</span><br><span class="line"></span><br><span class="line">// 直接等价于上个范例</span><br><span class="line">let CustomHTMLElement = (function() &#123;</span><br><span class="line">	&quot;use strict&quot;;</span><br><span class="line">	const CustomHTMLElement = function(element) &#123;</span><br><span class="line">		// 确认函数被调用时使用了 new</span><br><span class="line">		if (typeof new.target === &quot;undefined&quot;) &#123;</span><br><span class="line">			throw new Error(&quot;Constructor must be called with new.&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		this.element = element;</span><br><span class="line">	&#125;</span><br><span class="line">	Object.defineProperty(CustomHTMLElement.prototype, &quot;html&quot;, &#123;</span><br><span class="line">		enumerable: false,</span><br><span class="line">		configurable: true,</span><br><span class="line">		get: function() &#123;</span><br><span class="line">			return this.element.innerHTML;</span><br><span class="line">		&#125;,</span><br><span class="line">		set: function(value) &#123;</span><br><span class="line">			this.element.innerHTML = value;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;);</span><br><span class="line">	return CustomHTMLElement;</span><br><span class="line">&#125;());</span><br></pre></td></tr></table></figure></p>
+<h4 id="需计算的成员名"><a href="#需计算的成员名" class="headerlink" title="需计算的成员名"></a>需计算的成员名</h4><p>类方法与类访问器属性也都能使用需计算的名称。语法相同于对象字面量中的需计算名称：无须使用标识符，而是用方括号来包裹一个表达式。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let methodName = &quot;sayName&quot;;</span><br><span class="line">let propertyName = &quot;html&quot;;</span><br><span class="line">class PersonClass &#123;</span><br><span class="line">	constructor(name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	[methodName]() &#123;</span><br><span class="line">		console.log(this.name);</span><br><span class="line">	&#125;</span><br><span class="line">	get [propertyName]() &#123;</span><br><span class="line">		return this.element.innerHTML;</span><br><span class="line">	&#125;</span><br><span class="line">	set [propertyName](value) &#123;</span><br><span class="line">		this.element.innerHTML = value;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">let me = new PersonClass(&quot;Nicholas&quot;);</span><br><span class="line">me.sayName(); // &quot;Nicholas&quot;</span><br></pre></td></tr></table></figure></p>
+<h4 id="生成器方法"><a href="#生成器方法" class="headerlink" title="生成器方法"></a>生成器方法</h4><p>只要在方法名称前附加一个星号（*）。这一语法对类同样有效，允许将任何方法变为一个生成器。你可以使用Symbol.iterator来定义生成器方法，从而定义出类的默认迭代器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Collection &#123;</span><br><span class="line">	constructor() &#123;</span><br><span class="line">		this.items = [];</span><br><span class="line">	&#125;</span><br><span class="line">	*[Symbol.iterator]() &#123;</span><br><span class="line">		yield *this.items.values();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var collection = new Collection();</span><br><span class="line">collection.items.push(1);</span><br><span class="line">collection.items.push(2);</span><br><span class="line">collection.items.push(3);</span><br><span class="line">for (let x of collection) &#123;</span><br><span class="line">	console.log(x);</span><br><span class="line">&#125;</span><br><span class="line">// 输出：</span><br><span class="line">// 1</span><br><span class="line">// 2</span><br><span class="line">// 3</span><br></pre></td></tr></table></figure><br>当你想让方法与访问器属性在对象实例上出现时，把它们添加到类的原型上就会对此目的有帮助。而另一方面，若想让方法与访问器属性只存在于类自身，那么你就需要使用静态成员。</p>
+<h4 id="静态成员"><a href="#静态成员" class="headerlink" title="静态成员"></a>静态成员</h4><p>只要在方法与访问器属性的名称前添加正式的static标注。你能在类中的任何方法与访问器属性上使用static关键字，唯一限制是不能将它用于constructor方法的定义。静态成员不能用实例来访问，你始终需要直接用类自身来访问它们。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class PersonClass &#123;</span><br><span class="line">	// 等价于 PersonType 构造器</span><br><span class="line">	constructor(name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">	// 等价于 PersonType.prototype.sayName</span><br><span class="line">	sayName() &#123;</span><br><span class="line">		console.log(this.name);</span><br><span class="line">	&#125;</span><br><span class="line">	// 等价于 PersonType.create</span><br><span class="line">	static create(name) &#123;</span><br><span class="line">		return new PersonClass(name);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">let person = PersonClass.create(&quot;Nicholas&quot;);</span><br></pre></td></tr></table></figure></p>
+<h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><p>继承了其他类的类被称为派生类（derived classes）。如果派生类指定了构造器，就需要使用super()，否则会造成错误。若你选择不使用构造器，super()方法会被自动调用，并会使用创建新实例时提供的所有参数。<br>1.使用super()时需牢记以下几点：<br>(1). 你只能在派生类中使用super()。若尝试在非派生的类（即：没有使用extends关键字的类）或函数中使用它，就会抛出错误。<br>(2). 在构造器中，你必须在访问this之前调用super()。由于super()负责初始化this，因此试图先访问this自然就会造成错误。<br>(3). 唯一能避免调用super()的办法，是从类构造器中返回一个对象。<br>2.派生类中的方法总是会屏蔽基类的同名方法。可以使用super.方法来调用基类中的同名方法。<br>3.如果基类包含静态成员，那么这些静态成员在派生类中也是可用的。<br>4.只要一个表达式能够返回一个具有[[Construct]]属性以及原型的函数，你就可以对其使用extends。extends后面能接受任意类型的表达式，这带来了巨大可能性，例如动态地决定所要继承的类。null和生成器函数不存在[[Construct]]不能在extends关键字后使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function Rectangle(length, width) &#123;</span><br><span class="line">	this.length = length;</span><br><span class="line">	this.width = width;</span><br><span class="line">&#125;</span><br><span class="line">Rectangle.prototype.getArea = function() &#123;</span><br><span class="line">	return this.length * this.width;</span><br><span class="line">&#125;;</span><br><span class="line">function getBase() &#123;</span><br><span class="line">	return Rectangle;</span><br><span class="line">&#125;</span><br><span class="line">class Square extends getBase() &#123;</span><br><span class="line">	constructor(length) &#123;</span><br><span class="line">		super(length, length);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var x = new Square(3);</span><br><span class="line">console.log(x.getArea()); // 9</span><br><span class="line">console.log(x instanceof Rectangle); // true</span><br></pre></td></tr></table></figure><br>5.继承内置对象<br>在ES5的传统继承中，this的值会先被派生类（例如MyArray）创建，随后基类构造器（例如Array.apply()方法）才被调用。这意味着this一开始就是MyArray的实例，之后才使用了Array的附加属性对其进行了装饰。<br>在ES6基于类的继承中，this的值会先被基类（Array）创建，随后才被派生类的构造器（MyArray）所修改。结果是this初始就拥有作为基类的内置对象的所有功能，并能正确接收与之关联的所有功能。<br>6.Symbol.species 属性<br>一般而言，每当想在类方法中使用this.constructor时，你就应当设置类的Symbol.species属性。这么做允许派生类轻易地重写方法的返回类型。此外，若你从一个拥有Symbol.species定义的类创建了派生类，要保证使用此属性，而不是直接使用构造器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class MyArray extends Array &#123;</span><br><span class="line">	// 空代码块</span><br><span class="line">&#125;</span><br><span class="line">let items = new MyArray(1, 2, 3, 4),</span><br><span class="line">subitems = items.slice(1, 3);</span><br><span class="line">console.log(items instanceof MyArray); // true</span><br><span class="line">console.log(subitems instanceof MyArray); // true</span><br><span class="line"></span><br><span class="line">class MyArray extends Array &#123;</span><br><span class="line">	static get [Symbol.species]() &#123;   //只有getter而没有setter，这是因为修改类的species是不允许的。</span><br><span class="line">		return Array;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">let items = new MyArray(1, 2, 3, 4),</span><br><span class="line">subitems = items.slice(1, 3);</span><br><span class="line">console.log(items instanceof MyArray); // true</span><br><span class="line">console.log(subitems instanceof Array); // true</span><br><span class="line">console.log(subitems instanceof MyArray); // fals</span><br></pre></td></tr></table></figure></p>
+<h4 id="在类构造器中使用new-target"><a href="#在类构造器中使用new-target" class="headerlink" title="在类构造器中使用new.target"></a>在类构造器中使用new.target</h4><p>1.在类构造器中使用new.target，来判断类是被如何被调用的<br>(1)在简单情况下，new.target就等于本类的构造器函数<br>(2)因为构造器能根据如何被调用而有不同行为，并且这给了更改这种行为的能力。例如，你可以使用new.target来创建一个抽象基类（一种不能被实例化的类）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 静态的基类</span><br><span class="line">class Shape &#123;</span><br><span class="line">	constructor() &#123;</span><br><span class="line">		if (new.target === Shape) &#123;</span><br><span class="line">			throw new Error(&quot;This class cannot be instantiated directly.&quot;)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Rectangle extends Shape &#123;</span><br><span class="line">	constructor(length, width) &#123;</span><br><span class="line">		super();</span><br><span class="line">		this.length = length;</span><br><span class="line">		this.width = width;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var x = new Shape(); // 抛出错误</span><br><span class="line">var y = new Rectangle(3, 4); // 没有错误</span><br><span class="line">console.log(y instanceof Shape); // true</span><br></pre></td></tr></table></figure><br>(3)由于调用类时不能缺少new，于是new.target属性在类构造器内部就绝不会是undefined。</p>
+<h3 id="增强的数组功能"><a href="#增强的数组功能" class="headerlink" title="增强的数组功能"></a>增强的数组功能</h3><h4 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h4><p>1.Array.of()方法总会创建一个包含所有传入参数的数组，而不管参数的数量与类型。<br>2.Array.from():<br>(1)将可迭代对象或者类数组对象作为第一个参数传入，Array.from()就能返回一个数组。<br>(2)向Array.from()方法传递一个映射用的函数作为第二个参数。此函数会将类数组对象的每一个值转换为目标形式，并将其存储在目标数组的对应位置上。<br>(3)传递第三个参数给Array.from()方法，指定映射函数内部的this值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let helper = &#123;</span><br><span class="line">	diff: 1,</span><br><span class="line">	add(value) &#123;</span><br><span class="line">		return value + this.diff;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">function translate() &#123;</span><br><span class="line">	return Array.from(arguments, helper.add, helper);</span><br><span class="line">&#125;</span><br><span class="line">let numbers = translate(1, 2, 3);</span><br><span class="line">console.log(numbers); // 2,3,4</span><br></pre></td></tr></table></figure></p>
+<h4 id="所有数组上的新方法"><a href="#所有数组上的新方法" class="headerlink" title="所有数组上的新方法"></a>所有数组上的新方法</h4><p>1.find() 与 findIndex()<br>(1)ES5增加了indexOf()与lastIndexOf()方法，从而允许开发者在数组中查找特定值。<br>find()与findIndex()方法在查找满足特定条件的数组元素时非常有用。<br>(2)find()与findIndex()方法均接受两个参数：一个回调函数、一个可选值用于指定回调函数内部的this。该回调函数可接收三个参数：数组的某个元素、该元素对应的索引位置、以及该数组自身，这与map()和forEach()方法的回调函数所用的参数一致。该回调函数应当在给定的元素满足你定义的条件时返回true，而find()与findIndex()方法均会在回调函数第一次返回true时停止查找。二者唯一的区别是：find()方法会返回匹配的值，而findIndex()方法则会返回匹配位置的索引。<br>2.fill()方法<br>fill()方法能使用特定值填充数组中的一个或多个元素。当只使用一个参数的时候，该方法会用该参数的值填充整个数组。第二个参数指定填充的起始位置，第三个参数指定填充的结束位置（不包括结束位置的那个元素）。如果提供的起始位置或结束位置为负数，则它们会被加上数组的长度来算出最终的位置。<br>3.copyWithin()方法<br>copyWithin()方法允许你在数组内部复制自身元素。第一个参数从什么位置开始进行填充，第二个参数被用来复制的数据的起始位置索引，第三个参数指定了复制停止的位置（不包含该位置自身）。如果传递负数参数，数组的长度会自动被加到该参数的值上，以便算出正确的索引位置。</p>
+<h4 id="类型化数组"><a href="#类型化数组" class="headerlink" title="类型化数组"></a>类型化数组</h4><p>类型化数组是有特殊用途的数组，被设计用来处理数值类型数据。</p>
+<h5 id="数值数据类型"><a href="#数值数据类型" class="headerlink" title="数值数据类型"></a>数值数据类型</h5><ol>
+<li>8 位有符号整数（int8）</li>
+<li>8 位无符号整数（uint8）</li>
+<li>16 位有符号整数（int16）</li>
+<li>16 位无符号整数（uint16）</li>
+<li>32 位有符号整数（int32）</li>
+<li>32 位无符号整数（uint32）</li>
+<li>32 位浮点数（float32）</li>
+<li>64 位浮点数（float64）<br>为了使用它们，你首先需要创建一个数组缓冲区用于存储数据。</li>
+</ol>
+<h5 id="数组缓冲区"><a href="#数组缓冲区" class="headerlink" title="数组缓冲区"></a>数组缓冲区</h5><p>数组缓冲区（array buffer）是内存中包含一定数量字节的区域，而所有的类型化数组都基于数组缓冲区。数组缓冲区总是保持创建时指定的字节数，你可以修改其内部的数据，但永远不能修改它的容量。<br>1.调用ArrayBuffer构造器时，只需要传入单个数值用于指定缓冲区包含的字节数。<br>2.当数组缓冲区被创建完毕后，你就可以通过检查byteLength属性来获取缓冲区的字节数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let buffer = new ArrayBuffer(10); // 分配了10个字节</span><br><span class="line">console.log(buffer.byteLength); // 10</span><br></pre></td></tr></table></figure><br>3.还可以使用slice()方法来创建一个新的、包含已有缓冲区部分内容的数组缓冲区。该slice()方法类似于数组上的同名方法，可以使用起始位置与结束位置参数，返回由原缓冲区元素组成的一个新的ArrayBuffer实例。<br>为了写入数据，你需要创建一个视图（view）</p>
+<h5 id="使用视图操作数组缓冲区"><a href="#使用视图操作数组缓冲区" class="headerlink" title="使用视图操作数组缓冲区"></a>使用视图操作数组缓冲区</h5><p>1.数组缓冲区代表了一块内存区域，而视图（views）则是你操作这块区域的接口。视图工作在数组缓冲区或其子集上，可以读写某种数值数据类型的数据。DataView类型是数组缓冲区的通用视图，允许你对前述所有八种数值数据类型进行操作。<br>2.也可以在缓冲区的一个部分上创建视图，只需要指定可选参数——字节偏移量、以及所要包含的字节数。当未提供最后一个参数时，该DataView视图会默认包含从偏移位置开始、到缓冲区末尾为止的元素。使用这种方式，你可以在同一个数组缓冲区上创建多个不同的视图，这样有助于将单块内存区域供给整个应用使用，而不必每次在有需要时才动态分配内存。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let buffer = new ArrayBuffer(10),</span><br><span class="line">view = new DataView(buffer, 5, 2); // 包含位置 5 与位置 6 的字节</span><br></pre></td></tr></table></figure><br>3.获取视图信息<br>(1)buffer：该视图所绑定的数组缓冲区；<br>(2)byteOffset：传给DataView构造器的第二个参数，如果当时提供了的话（默认值为0）;<br>(3)byteLength：传给DataView构造器的第三个参数，如果当时提供了的话（默认值为该缓冲区的byteLength属性）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let buffer = new ArrayBuffer(10),</span><br><span class="line">view1 = new DataView(buffer), // 包含所有字节</span><br><span class="line">view2 = new DataView(buffer, 5, 2); // 包含位置 5 与位置 6 的字节</span><br><span class="line">console.log(view1.buffer === buffer); // true</span><br><span class="line">console.log(view2.buffer === buffer); // true</span><br><span class="line">console.log(view1.byteOffset); // 0</span><br><span class="line">console.log(view2.byteOffset); // 5</span><br><span class="line">console.log(view1.byteLength); // 10</span><br><span class="line">console.log(view2.byteLength); // 2</span><br></pre></td></tr></table></figure><br>4.读取与写入数据(int8或uint8为例，8可以替换为16或32)<br>“get”方法接受两个参数：开始进行读取的字节偏移量、以及一个可选的布尔值，后者用于指定读取的值是否采用低字节优先方式（注：默认值为  false  ）。“set”方法则接受三个参数：开始进行写入的字节偏移量、需要写入的数据值、以及一个可选的布尔值用于指定是否采用低字节优先方式存储数据<br>低字节优先（Little-endian）也被翻译作“小端字节序”，指的是在存储数据的多个内存字节中，第一个内存字节存储着数据的最低字节数据，而最后一个内存字节存储着最高字节数据。<br>(1)getInt8(byteOffset, littleEndian) ：从byteOffset处开始读取一个 int8 值；<br>(2)setInt8(byteOffset, value, littleEndian) ：从byteOffset处开始写入一个 int8 值；<br>(3)getUint8(byteOffset, littleEndian) ：从byteOffset处开始读取一个无符号 int8 值；<br>(4)setUint8(byteOffset, value, littleEndian) ：从byteOffset处开始写入一个无符号int8值。</p>
+<p>DataView提供的方法<br>getFloat32(byteOffset, littleEndian) ：从byteOffset处开始读取一个 32 位的浮点数；<br>setFloat32(byteOffset, value, littleEndian) ：从byteOffset处开始写入一个 32 位的浮点数；<br>getFloat64(byteOffset, littleEndian) ：从byteOffset处开始读取一个 64 位的浮点数；<br>setFloat64(byteOffset, value, littleEndian) ：从byteOffset处开始写入一个 64 位的浮点数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let buffer = new ArrayBuffer(2),</span><br><span class="line">view = new DataView(buffer);</span><br><span class="line">view.setInt8(0, 5);</span><br><span class="line">view.setInt8(1, -1);</span><br><span class="line">console.log(view.getInt8(0)); // 5</span><br><span class="line">console.log(view.getInt8(1)); // -1</span><br></pre></td></tr></table></figure></p>
+<p>视图允许你使用任意格式对任意位置进行读写，而无须考虑这些数据此前是使用什么格式存储的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let buffer = new ArrayBuffer(2),</span><br><span class="line">view = new DataView(buffer);</span><br><span class="line">view.setInt8(0, 5);</span><br><span class="line">view.setInt8(1, -1);</span><br><span class="line">console.log(view.getInt16(0)); // 1535</span><br><span class="line">console.log(view.getInt8(0)); // 5</span><br><span class="line">console.log(view.getInt8(1)); // -1</span><br></pre></td></tr></table></figure></p>
+<h5 id="类型化数组即为视图"><a href="#类型化数组即为视图" class="headerlink" title="类型化数组即为视图"></a>类型化数组即为视图</h5><p>1.ES6 的类型化数组实际上也是针对数组缓冲区的特定类型视图，你可以使用这些数组对象来处理特定的数据类型，而不必使用通用的DataView对象。一共存在八种特定类型视图，对应着八种数值数据类型，为处理uint8值提供了额外的选择。<br>2.Int8Array,Uint8Array,Uint8ClampedArray,Int16Array,Uint16Array,Int32Array,Uint32Array,Float32Array,Float64Array<br>3.类型化数组只能在特定的一种数据类型上工作，例如：Int8Array的所有操作都只能处理int8值。类型化数组的元素可以使用数值型的索引位置来访问，就像常规数组那样，从而规避了使用DataView存取方法时的某些尴尬情况。<br>4.创建特定类型视图<br>(1)第一种方式是使用与创建DataView时相同的参数，即：一个数组缓冲区、一个可选的字节偏移量、以及一个可选的字节数量。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let buffer = new ArrayBuffer(10),</span><br><span class="line">	view1 = new Int8Array(buffer),</span><br><span class="line">	view2 = new Int8Array(buffer, 5, 2);</span><br><span class="line">console.log(view1.buffer === buffer); // true</span><br><span class="line">console.log(view2.buffer === buffer); // true</span><br><span class="line">console.log(view1.byteOffset); // 0</span><br><span class="line">console.log(view2.byteOffset); // 5</span><br><span class="line">console.log(view1.byteLength); // 10</span><br><span class="line">console.log(view2.byteLength); // 2</span><br></pre></td></tr></table></figure><br>(2)第二种方式是传递单个数值给类型化数组的构造器，此数值表示该数组包含的元素数量（而不是分配的字节数）。构造器将会创建一个新的缓冲区，分配正确的字节数以便容纳指定数量的数组元素，而你也可以使用length属性来获取这个元素数量。<br>如果调用类型化数组构造器时没有传入参数，构造器会认为传入了0，这种方式创建的类型化数组不会被分配任何存储空间，因此也就不能被用于保存数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let ints = new Int16Array(2),</span><br><span class="line">	floats = new Float32Array(5);</span><br><span class="line">console.log(ints.byteLength); // 4</span><br><span class="line">console.log(ints.length); // 2</span><br><span class="line">console.log(floats.byteLength); // 20</span><br><span class="line">console.log(floats.length); // 5</span><br></pre></td></tr></table></figure><br>(3)第三种方式是向构造器传递单个对象参数，可以是下列四种对象之一：<br>  类型化数组：数组所有元素都会被复制到新的类型化数组中。例如，如果你传递一个int8类型的数组给Int16Array构造器，这些int8的值会被复制到int16数组中。新的类型化数组与原先的类型化数组会使用不同的数组缓冲区。<br>  可迭代对象：该对象的迭代器会被调用以便将数据插入到类型化数组中。如果其中包含了不匹配视图类型的值，那么构造器就会抛出错误。<br>  数组：该数组的元素会被插入到新的类型化数组中。如果其中包含了不匹配视图类型的值，那么构造器就会抛出错误。<br>  类数组对象：与传入数组的表现一致。<br>新的类型化数组都会从原对象获取数据。若想用一些值来初始化一个类型化数组，这种方式就特别有用，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let ints1 = new Int16Array([25, 50]),</span><br><span class="line">	ints2 = new Int32Array(ints1);</span><br><span class="line">console.log(ints1.buffer === ints2.buffer); // false</span><br><span class="line">console.log(ints1.byteLength); // 4</span><br><span class="line">console.log(ints1.length); // 2</span><br><span class="line">console.log(ints1[0]); // 25</span><br><span class="line">console.log(ints1[1]); // 50</span><br><span class="line">console.log(ints2.byteLength); // 8</span><br><span class="line">console.log(ints2.length); // 2</span><br><span class="line">console.log(ints2[0]); // 25</span><br><span class="line">console.log(ints2[1]); // 50</span><br></pre></td></tr></table></figure></p>
+<h5 id="类型化数组与常规数组的相似点"><a href="#类型化数组与常规数组的相似点" class="headerlink" title="类型化数组与常规数组的相似点"></a>类型化数组与常规数组的相似点</h5><p>1.类型化数组在很多场景中都可以像常规数组那样被使用。例如可以使用length属性来获取类型化数组包含的元素数量，还可以使用数值类型的索引值来直接访问类型化数组的元素。与常规数组不同的是，你不能使用length属性来改变类型化数组的大小。该属性是不可写的，在非严格模式下写入操作会被忽略，而严格模式下则会抛出错误。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let ints = new Int16Array([25, 50]);</span><br><span class="line">console.log(ints.length); // 2</span><br><span class="line">console.log(ints[0]); // 25</span><br><span class="line">console.log(ints[1]); // 50</span><br><span class="line">ints[0] = 1;</span><br><span class="line">ints[1] = 2;</span><br><span class="line">console.log(ints[0]); // 1</span><br><span class="line">console.log(ints[1]); // 2</span><br><span class="line">/*</span><br><span class="line">这段代码创建了一个包含两个元素的Int16Array，使用数值类型的索引可以读写对应的项，而数值在存储时会被自动转换为int16类型的值。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure><br>2.公共方法<br>copyWithin() entries() fill() filter() find() findIndex() forEach() indexOf() join() keys() lastIndexOf() map() reduce() reduceRight() reverse() slice() some() sort() values()<br>类型化数组的方法会进行额外的类型检查以确保安全，并且返回值会是某种类型化数组，而不是常规数组（归结于Symbol.species属性）。<br>3.相同的迭代器<br>与常规数组相同，类型化数组也拥有三个迭代器，它们是entries()方法、keys()方法与values() 方法。这就意味着你可以对类型化数组使用扩展运算符，或者对其使用for-of循环，就像对待常规数组。<br>借助扩展运算符能轻易地将类型化数组转换为常规数组，就像处理其他可迭代对象那样。<br>3.of()与from()方法<br>所有的类型化数组都包含静态的of()与from()方法，作用类似于Array.of()与Array.from()方法。其中的区别是类型化数组的版本会返回类型化数组，而不返回常规数组。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">let ints = Int16Array.of(25, 50),</span><br><span class="line">	floats = Float32Array.from([1.5, 2.5]);</span><br><span class="line">console.log(ints instanceof Int16Array); // true</span><br><span class="line">console.log(floats instanceof Float32Array); // true</span><br><span class="line">console.log(ints.length); // 2</span><br><span class="line">console.log(ints[0]); // 25</span><br><span class="line">console.log(ints[1]); // 50</span><br><span class="line">console.log(floats.length); // 2</span><br><span class="line">console.log(floats[0]); // 1.5</span><br><span class="line">console.log(floats[1]); // 2.5</span><br></pre></td></tr></table></figure></p>
+<h5 id="类型化数组与常规数组的区别"><a href="#类型化数组与常规数组的区别" class="headerlink" title="类型化数组与常规数组的区别"></a>类型化数组与常规数组的区别</h5><p>1.二者最重要的区别就是类型化数组并不是常规数组，类型化数组并不是从Array对象派生的，使用Array.isArray()去检测会返回false。<br>2.常规数组可以被伸展或是收缩，然而类型化数组却会始终保持自身大小不变。你可以对常规数组一个不存在的索引位置进行赋值，但在类型化数组上这么做则会被忽略。<br>3.类型化数组也会对数据类型进行检查以保证只使用有效的值，当无效的值被传入时，将会被替换为0。所有在类型化数组上修改项目值的方法都会受到相同的限制，例如当map()方法使用的映射函数返回一个无效值的时候，类型化数组会使用0来代替返回值。多亏这种纠错行为，类型化数组的内容永远不会是无效值，因此相关方法就无须再担心传入无效值会导致错误。<br>4.类型化数组没有concat() pop() push() shift() splice() unshift()方法。除了concat()方法之外，该列表中的其余方法都会改变数组的大小，而由于类型化数组的大小不可变，因此这些方法都不能作用于类型化数组。concat()方法不可用的原因则是：连接两个类型化数组的结果是不确定的（特别是当它们处理的数据类型不同时），这种不确定情况原本就不应当使用类型化数组。<br>5.类型化数组还有两个常规数组所不具备的方法：set()方法与subarray()方法。这两个方法作用相反：set()方法从另一个数组中复制元素到当前的类型化数组，而subarray()方法则是将当前类型化数组的一部分提取为新的类型化数组。<br>(1)set()方法接受一个数组参数（无论是类型化的还是常规的）、以及一个可选的偏移量参数，后者指示了从什么位置开始插入数据（默认值为0）。数组参数中的数据会被复制到目标类型化数组中，并会确保数据值有效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let ints = new Int16Array(4);</span><br><span class="line">ints.set([25, 50]);</span><br><span class="line">ints.set([75, 100], 2);</span><br><span class="line">console.log(ints.toString()); // 25,50,75,100</span><br></pre></td></tr></table></figure><br>(2)subarray()方法接受一个可选的开始位置索引参数、以及一个可选的结束位置索引参数（像slice()方法一样，结束位置的元素不会被包含在结果中），并会返回一个新的类型化数组。你可以同时省略这两个参数，从而创建原类型化数组的一个复制品。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let ints = new Int16Array([25, 50, 75, 100]),</span><br><span class="line">	subints1 = ints.subarray(),</span><br><span class="line">	subints2 = ints.subarray(2),</span><br><span class="line">	subints3 = ints.subarray(1, 3);</span><br><span class="line">console.log(subints1.toString()); // 25,50,75,100</span><br><span class="line">console.log(subints2.toString()); // 75,100</span><br><span class="line">console.log(subints3.toString()); // 50,75</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/19/es61/" rel="next" title="深入理解ES6（1）">
+                <i class="fa fa-chevron-left"></i> 深入理解ES6（1）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/22/es63/" rel="prev" title="深入理解ES6（3）">
+                深入理解ES6（3） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/head.jpeg" alt="Chris Han">
+          <p class="site-author-name" itemprop="name">Chris Han</p>
+           
+              <p class="site-description motion-element" itemprop="description">一人一世界</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Set与Map"><span class="nav-number">1.</span> <span class="nav-text">Set与Map</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#set"><span class="nav-number">1.1.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WeakSet"><span class="nav-number">1.2.</span> <span class="nav-text">WeakSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Map"><span class="nav-number">1.3.</span> <span class="nav-text">Map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#WeakMap"><span class="nav-number">1.4.</span> <span class="nav-text">WeakMap</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代器与生成器"><span class="nav-number">2.</span> <span class="nav-text">迭代器与生成器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代器"><span class="nav-number">2.1.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成器"><span class="nav-number">2.2.</span> <span class="nav-text">生成器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可迭代对象与-for-of-循环"><span class="nav-number">2.3.</span> <span class="nav-text">可迭代对象与 for-of 循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置的迭代器"><span class="nav-number">2.4.</span> <span class="nav-text">内置的迭代器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代器高级功能"><span class="nav-number">2.5.</span> <span class="nav-text">迭代器高级功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#js中的类"><span class="nav-number">3.</span> <span class="nav-text">js中的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类"><span class="nav-number">3.1.</span> <span class="nav-text">类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类与自定义类型之间的区别"><span class="nav-number">3.2.</span> <span class="nav-text">类与自定义类型之间的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作为一级公民的类"><span class="nav-number">3.3.</span> <span class="nav-text">作为一级公民的类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问器属性"><span class="nav-number">3.4.</span> <span class="nav-text">访问器属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#需计算的成员名"><span class="nav-number">3.5.</span> <span class="nav-text">需计算的成员名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成器方法"><span class="nav-number">3.6.</span> <span class="nav-text">生成器方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态成员"><span class="nav-number">3.7.</span> <span class="nav-text">静态成员</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承"><span class="nav-number">3.8.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在类构造器中使用new-target"><span class="nav-number">3.9.</span> <span class="nav-text">在类构造器中使用new.target</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增强的数组功能"><span class="nav-number">4.</span> <span class="nav-text">增强的数组功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建数组"><span class="nav-number">4.1.</span> <span class="nav-text">创建数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#所有数组上的新方法"><span class="nav-number">4.2.</span> <span class="nav-text">所有数组上的新方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型化数组"><span class="nav-number">4.3.</span> <span class="nav-text">类型化数组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数值数据类型"><span class="nav-number">4.3.1.</span> <span class="nav-text">数值数据类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数组缓冲区"><span class="nav-number">4.3.2.</span> <span class="nav-text">数组缓冲区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用视图操作数组缓冲区"><span class="nav-number">4.3.3.</span> <span class="nav-text">使用视图操作数组缓冲区</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类型化数组即为视图"><span class="nav-number">4.3.4.</span> <span class="nav-text">类型化数组即为视图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类型化数组与常规数组的相似点"><span class="nav-number">4.3.5.</span> <span class="nav-text">类型化数组与常规数组的相似点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类型化数组与常规数组的区别"><span class="nav-number">4.3.6.</span> <span class="nav-text">类型化数组与常规数组的区别</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chris Han</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+<br>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

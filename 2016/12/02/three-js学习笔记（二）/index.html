@@ -1,0 +1,718 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="three.js在线中文文档  文字形状可以用来创建三维的文字形状。使用文字形状需要下载和引用额外的字体库。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="three.js学习笔记（二）">
+<meta property="og:url" content="https://1072843095.github.io/2016/12/02/three-js学习笔记（二）/index.html">
+<meta property="og:site_name" content="还没想好">
+<meta property="og:description" content="three.js在线中文文档  文字形状可以用来创建三维的文字形状。使用文字形状需要下载和引用额外的字体库。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-27T04:44:39.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="three.js学习笔记（二）">
+<meta name="twitter:description" content="three.js在线中文文档  文字形状可以用来创建三维的文字形状。使用文字形状需要下载和引用额外的字体库。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1072843095.github.io/2016/12/02/three-js学习笔记（二）/">
+
+
+
+
+
+  <title> three.js学习笔记（二） | 还没想好 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">还没想好</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">也还没想好</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://1072843095.github.io/2016/12/02/three-js学习笔记（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chris Han">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/head.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="还没想好">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                three.js学习笔记（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-02T19:11:21+08:00">
+                2016-12-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote><p><a href="http://techbrood.com/threejs/docs/" target="_blank" rel="noopener">three.js在线中文文档</a></p>
+</blockquote>
+<h2 id="文字形状"><a href="#文字形状" class="headerlink" title="文字形状"></a>文字形状</h2><p>可以用来创建三维的文字形状。使用文字形状需要下载和引用额外的字体库。<br><a id="more"></a></p>
+<h3 id="加载文字"><a href="#加载文字" class="headerlink" title="加载文字"></a>加载文字</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var loader = new THREE.FontLoader();</span><br><span class="line">loader.load(&apos;../lib/helvetiker_regular.typeface.json&apos;, function(font) &#123;</span><br><span class="line">    var mesh = new THREE.Mesh(new THREE.TextGeometry(&apos;Hello&apos;, &#123;</span><br><span class="line">        font: font,</span><br><span class="line">        size: 1,</span><br><span class="line">        height: 1</span><br><span class="line">    &#125;), material);</span><br><span class="line">    scene.add(mesh);</span><br><span class="line"></span><br><span class="line">    // render</span><br><span class="line">    renderer.render(scene, camera);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.TextGeometry(text, parameters);</span><br></pre></td></tr></table></figure>
+<p>text是文字字符串，parameters是以下参数组成的对象：<br>size：字号大小，一般为大写字母的高度<br>height：文字的厚度<br>curveSegments：弧线分段数，使得文字的曲线更加光滑<br>font：字体，默认是’helvetiker’，需对应引用的字体文件<br>weight：值为’normal’或’bold’，表示是否加粗<br>style：值为’normal’或’italics’，表示是否斜体<br>bevelEnabled：布尔值，是否使用倒角，意为在边缘处斜切<br>bevelThickness：倒角厚度<br>bevelSize：倒角宽度</p>
+<h2 id="材质"><a href="#材质" class="headerlink" title="材质"></a>材质</h2><p>材质是独立于物体顶点信息之外的与渲染效果相关的属性。通过设置材质可以改变物体的颜色、纹理贴图、光照模式等。</p>
+<h3 id="基本材质"><a href="#基本材质" class="headerlink" title="基本材质"></a>基本材质</h3><p>使用基本材质的物体，渲染后物体的颜色始终为该材质的颜色，而不会由于光照产生明暗、阴影效果。如果没有指定材质的颜色，则颜色是随机的。其构造函数是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.MeshBasicMaterial(opt);</span><br></pre></td></tr></table></figure><br>opt可以缺省，或者为包含各属性的值。<br>visible：是否可见，默认为true<br>side：渲染面片正面或是反面，默认为正面THREE.FrontSide，可设置为反面THREE.BackSide，或双面THREE.DoubleSide<br>wireframe：是否渲染线而非面，默认为false<br>color：十六进制RGB颜色，如红色表示为0xff0000<br>map：使用纹理贴图</p>
+<h3 id="Lambert材质"><a href="#Lambert材质" class="headerlink" title="Lambert材质"></a>Lambert材质</h3><p>只考虑漫反射而不考虑镜面反射的效果，因而对于金属、镜子等需要镜面反射效果的物体就不适应，对于其他大部分物体的漫反射效果都是适用的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.MeshLambertMaterial(opt);</span><br></pre></td></tr></table></figure><br>color：是用来表现材质对散射光的反射能力，也是最常用来设置材质颜色的属性<br>ambient：表示对环境光的反射能力，只有当设置了AmbientLight后，该值才是有效的，材质对环境光的反射能力与环境光强相乘后得到材质实际表现的颜色。<br>emissive：是材质的自发光颜色，可以用来表现光源的颜色。</p>
+<h3 id="Phong材质"><a href="#Phong材质" class="headerlink" title="Phong材质"></a>Phong材质</h3><p>考虑了镜面反射的效果，因此对于金属、镜面的表现尤为适合<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.MeshPhongMaterial(opt);</span><br></pre></td></tr></table></figure><br>color：是用来表现材质对散射光的反射能力，也是最常用来设置材质颜色的属性<br>ambient：表示对环境光的反射能力，只有当设置了AmbientLight后，该值才是有效的，材质对环境光的反射能力与环境光强相乘后得到材质实际表现的颜色。<br>emissive：是材质的自发光颜色，可以用来表现光源的颜色。单独使用红色的自发光：<br>specular：指定镜面光<br>shininess：值越大时，高光的光斑越小，默认值为30</p>
+<h3 id="法向材质"><a href="#法向材质" class="headerlink" title="法向材质"></a>法向材质</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.MeshNormalMaterial();</span><br></pre></td></tr></table></figure>
+<p>可以将材质的颜色设置为其法向量的方向，有时候对于调试很有帮助。材质的颜色与照相机与该物体的角度相关。</p>
+<h3 id="材质的纹理贴图"><a href="#材质的纹理贴图" class="headerlink" title="材质的纹理贴图"></a>材质的纹理贴图</h3><p>导入图像作为纹理贴图，并添加到相应的材质中<br><figure class="highlight plain"><figcaption><span>一个面</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var texture = THREE.ImageUtils.loadTexture(&apos;../img/0.png&apos;, &#123;&#125;, function() &#123;</span><br><span class="line">    renderer.render(scene, camera);</span><br><span class="line">&#125;);</span><br><span class="line">var material = new THREE.MeshLambertMaterial(&#123;</span><br><span class="line">    map: texture</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><figcaption><span>六个面</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var materials = [];</span><br><span class="line">for (var i = 0; i &lt; 6; ++i) &#123;</span><br><span class="line">    materials.push(new THREE.MeshBasicMaterial(&#123;</span><br><span class="line">        map: THREE.ImageUtils.loadTexture(&apos;../img/&apos; + i + &apos;.png&apos;,</span><br><span class="line">                &#123;&#125;, function() &#123;</span><br><span class="line">                    renderer.render(scene, camera);</span><br><span class="line">                &#125;),</span><br><span class="line">        overdraw: true</span><br><span class="line">    &#125;));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var cube = new THREE.Mesh(new THREE.CubeGeometry(5, 5, 5),</span><br><span class="line">        new THREE.MeshFaceMaterial(materials));</span><br><span class="line">scene.add(cube);</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><figcaption><span>棋盘格</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var texture = THREE.ImageUtils.loadTexture(&apos;../img/chess.png&apos;, &#123;&#125;, function() &#123;</span><br><span class="line">    renderer.render(scene, camera);</span><br><span class="line">&#125;);</span><br><span class="line">texture.wrapS = texture.wrapT = THREE.RepeatWrapping;//重复方式为两个方向（wrapS和wrapT）都重复</span><br><span class="line">texture.repeat.set(4, 4);//设置两个方向上都重复4次</span><br></pre></td></tr></table></figure></p>
+<h2 id="网格：网格是由顶点、边、面等组成的物体"><a href="#网格：网格是由顶点、边、面等组成的物体" class="headerlink" title="网格：网格是由顶点、边、面等组成的物体"></a>网格：网格是由顶点、边、面等组成的物体</h2><figure class="highlight plain"><figcaption><span>棋盘格</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mesh(geometry, material);</span><br></pre></td></tr></table></figure>
+<p>如果不指定material，则每次会随机分配一种wireframe为true的材质，每次刷新页面后的颜色是不同的.</p>
+<p>除了在构造函数中指定材质，在网格被创建后，也能对材质进行修改。<br><figure class="highlight plain"><figcaption><span>棋盘格</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var material = new THREE.MeshLambertMaterial(&#123;</span><br><span class="line">    color: 0xffff00</span><br><span class="line">&#125;);</span><br><span class="line">var geometry = new THREE.CubeGeometry(1, 2, 3);</span><br><span class="line">var mesh = new THREE.Mesh(geometry, material);</span><br><span class="line">scene.add(mesh);</span><br><span class="line"></span><br><span class="line">mesh.material = new THREE.MeshLambertMaterial(&#123;</span><br><span class="line">    color: 0xff0000</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>THREE.Vector3有x、y、z三个属性，如果只设置其中一个属性，则可以用以下方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mesh.position.z = 1;</span><br></pre></td></tr></table></figure><br>如果需要同时设置多个属性，可以使用以下两种方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mesh.position.set(1.5, -0.5, 0);</span><br><span class="line">mesh.position = new THREE.Vector3(1.5, -0.5, 0);</span><br></pre></td></tr></table></figure></p>
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;stats.min.js&quot;&gt;&lt;/script&gt;&lt;!--实时的FPS信息，从而更好地监测动画效果。它占据屏幕中的一小块位置（如左上角）。单击后显示每帧渲染时间--&gt;</span><br><span class="line">var stat = null;</span><br><span class="line">function init() &#123;</span><br><span class="line">    stat = new Stats();</span><br><span class="line">    stat.domElement.style.position = &apos;absolute&apos;;</span><br><span class="line">    stat.domElement.style.right = &apos;0px&apos;;</span><br><span class="line">    stat.domElement.style.top = &apos;0px&apos;;</span><br><span class="line">    document.body.appendChild(stat.domElement);</span><br><span class="line"></span><br><span class="line">    // Three.js init ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后，在上一节介绍的动画重绘函数draw中调用stat.begin();与stat.end();分别表示一帧的开始与结束：最终就能得到FPS效果了。requestAnimationFrame跟js一样。</p>
+<h2 id="光与影"><a href="#光与影" class="headerlink" title="光与影"></a>光与影</h2><h3 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h3><p>环境光是指场景整体的光照效果，是由于场景内若干光源的多次反射形成的亮度一致的效果，通常用来为整个场景指定一个基础亮度。因此，环境光没有明确的光源位置，在各处形成的亮度也是一致的。</p>
+<p>在设置环境光时，只需要指定光的颜色：THREE.AmbientLight(hex)其中，hex是十六进制的RGB颜色信息，如红色表示为0xff0000。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var light = new THREE.AmbientLight(0xffffff);//如果想让环境光暗些，可以将其设置为new THREE.AmbientLight(0xcccccc)等</span><br><span class="line">scene.add(light);</span><br></pre></td></tr></table></figure><br>环境光并不在乎物体材质的color属性，而是ambient属性。ambient属性的默认值是0xffffff。<br>不透明物体的颜色其实是其反射光的颜色，而ambient属性表示的是物体反射环境光的能力。对于0x00ff00的物体，红色通道是0，而环境光是完全的红光，因此该长方体不能反射任何光线，最终的渲染颜色就是黑色；而对于0xffffff的白色长方体，红色通道是0xff，因而能反射所有红光，渲染的颜色就是红色。<br>当环境光不是白色或灰色的时候，渲染的效果往往会很奇怪。因此，环境光通常使用白色或者灰色，作为整体光照的基础。</p>
+<h3 id="点光源"><a href="#点光源" class="headerlink" title="点光源"></a>点光源</h3><p>点光源是不计光源大小，可以看作一个点发出的光源。点光源照到不同物体表面的亮度是线性递减的，因此，离点光源距离越远的物体会显得越暗。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.PointLight(hex, intensity, distance);</span><br></pre></td></tr></table></figure><br>hex是光源十六进制的颜色值；intensity是亮度，缺省值为1，表示100%亮度；distance是光源最远照射到的距离，缺省值为0。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var light = new THREE.PointLight(0xffffff, 2, 100);</span><br><span class="line">light.position.set(0, 1.5, 2);</span><br><span class="line">scene.add(light);</span><br></pre></td></tr></table></figure></p>
+<h3 id="平行光"><a href="#平行光" class="headerlink" title="平行光"></a>平行光</h3><p>对于任意平行的平面，平行光照射的亮度都是相同的，而与平面所在位置无关。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.DirectionalLight(hex, intensity);</span><br></pre></td></tr></table></figure><br>hex是光源十六进制的颜色值；intensity是亮度，缺省值为1，表示100%亮度。此外，对于平行光而言，设置光源位置尤为重要。</p>
+<h3 id="聚光灯"><a href="#聚光灯" class="headerlink" title="聚光灯"></a>聚光灯</h3><p>聚光灯是一种特殊的点光源，它能够朝着一个方向投射光线。聚光灯投射出的是类似圆锥形的光线。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">THREE.SpotLight(hex, intensity, distance, angle, exponent);</span><br></pre></td></tr></table></figure><br>相比点光源，多了angle和exponent两个参数。angle是聚光灯的张角，缺省值是Math.PI / 3，最大值是Math.PI / 2；exponent是光强在偏离target的衰减指数（target需要在之后定义，缺省值为(0, 0, 0)），缺省值是10。<br>在调用构造函数之后，除了设置光源本身的位置，一般还需要设置target：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">light.position.set(x1, y1, z1);light.target.position.set(x2, y2, z2);</span><br></pre></td></tr></table></figure><br>除了设置light.target.position的方法外，如果想让聚光灯跟着某一物体移动（就像真的聚光灯！），可以target指定为该物体：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1),</span><br><span class="line">        new THREE.MeshLambertMaterial(&#123;color: 0x00ff00&#125;));</span><br><span class="line"></span><br><span class="line">var light = new THREE.SpotLight(0xffff00, 1, 100, Math.PI / 6, 25);</span><br><span class="line">light.target = cube;</span><br></pre></td></tr></table></figure></p>
+<h3 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h3><p>在Three.js中，能形成阴影的光源只有THREE.DirectionalLight与THREE.SpotLight；而相对地，能表现阴影效果的材质只有THREE.LambertMaterial与THREE.PhongMaterial。</p>
+<p>我们需要在初始化时，告诉渲染器渲染阴影：renderer.shadowMapEnabled = true;然后，对于光源以及所有要产生阴影的物体调用：xxx.castShadow = true;对于接收阴影的物体调用：xxx.receiveShadow = true;</p>
+<p>通常还需要设置光源的阴影相关属性，才能正确显示出阴影效果。<br>对于聚光灯，需要设置shadowCameraNear、shadowCameraFar、shadowCameraFov三个值，类比我们在第二章学到的透视投影照相机，只有介于shadowCameraNear与shadowCameraFar之间的物体将产生阴影，shadowCameraFov表示张角。</p>
+<p>对于平行光，需要设置shadowCameraNear、shadowCameraFar、shadowCameraLeft、shadowCameraRight、shadowCameraTop以及shadowCameraBottom六个值，相当于正交投影照相机的六个面。同样，只有在这六个面围成的长方体内的物体才会产生阴影效果。</p>
+<p>为了看到阴影照相机的位置，通常可以在调试时开启light.shadowCameraVisible = true。</p>
+<p>如果想要修改阴影的深浅，可以通过设置shadowDarkness，该值的范围是0到1，越小越浅。而如果想实现软阴影的效果，可以通过renderer.shadowMapSoft = true;方便地实现。</p>
+<h2 id="着色器"><a href="#着色器" class="headerlink" title="着色器"></a>着色器</h2><p>使用着色器可以更灵活地控制渲染效果，结合纹理，可以进行多次渲染，达到更强大的效果。着色器是屏幕上呈现画面之前的最后一步，用它可以对先前渲染的结果做修改，包括对颜色、位置等等信息的修改，甚至可以对先前渲染的结果做后处理，实现高级的渲染效果。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/02/three-js学习笔记（一）/" rel="next" title="three.js学习笔记（一）">
+                <i class="fa fa-chevron-left"></i> three.js学习笔记（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/12/life/" rel="prev" title="生活还是要充满希望的">
+                生活还是要充满希望的 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/head.jpeg" alt="Chris Han">
+          <p class="site-author-name" itemprop="name">Chris Han</p>
+           
+              <p class="site-description motion-element" itemprop="description">一人一世界</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文字形状"><span class="nav-number">1.</span> <span class="nav-text">文字形状</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加载文字"><span class="nav-number">1.1.</span> <span class="nav-text">加载文字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#材质"><span class="nav-number">2.</span> <span class="nav-text">材质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本材质"><span class="nav-number">2.1.</span> <span class="nav-text">基本材质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Lambert材质"><span class="nav-number">2.2.</span> <span class="nav-text">Lambert材质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Phong材质"><span class="nav-number">2.3.</span> <span class="nav-text">Phong材质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#法向材质"><span class="nav-number">2.4.</span> <span class="nav-text">法向材质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#材质的纹理贴图"><span class="nav-number">2.5.</span> <span class="nav-text">材质的纹理贴图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网格：网格是由顶点、边、面等组成的物体"><span class="nav-number">3.</span> <span class="nav-text">网格：网格是由顶点、边、面等组成的物体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画"><span class="nav-number">4.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#光与影"><span class="nav-number">5.</span> <span class="nav-text">光与影</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境光"><span class="nav-number">5.1.</span> <span class="nav-text">环境光</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点光源"><span class="nav-number">5.2.</span> <span class="nav-text">点光源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平行光"><span class="nav-number">5.3.</span> <span class="nav-text">平行光</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚光灯"><span class="nav-number">5.4.</span> <span class="nav-text">聚光灯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阴影"><span class="nav-number">5.5.</span> <span class="nav-text">阴影</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#着色器"><span class="nav-number">6.</span> <span class="nav-text">着色器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chris Han</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+<br>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
