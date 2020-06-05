@@ -1,0 +1,753 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="Promise与异步编程Promise基础1.Promise是为异步操作的结果所准备的占位符。函数可以返回一个Promise，而不必订阅一个事件或向函数传递一个回调参数。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解ES6（3）">
+<meta property="og:url" content="https://1072843095.github.io/2018/03/22/es63/index.html">
+<meta property="og:site_name" content="还没想好">
+<meta property="og:description" content="Promise与异步编程Promise基础1.Promise是为异步操作的结果所准备的占位符。函数可以返回一个Promise，而不必订阅一个事件或向函数传递一个回调参数。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-27T04:44:39.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解ES6（3）">
+<meta name="twitter:description" content="Promise与异步编程Promise基础1.Promise是为异步操作的结果所准备的占位符。函数可以返回一个Promise，而不必订阅一个事件或向函数传递一个回调参数。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://1072843095.github.io/2018/03/22/es63/">
+
+
+
+
+
+  <title> 深入理解ES6（3） | 还没想好 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">还没想好</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">也还没想好</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://1072843095.github.io/2018/03/22/es63/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chris Han">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/head.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="还没想好">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                深入理解ES6（3）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T17:31:37+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Promise与异步编程"><a href="#Promise与异步编程" class="headerlink" title="Promise与异步编程"></a>Promise与异步编程</h3><h4 id="Promise基础"><a href="#Promise基础" class="headerlink" title="Promise基础"></a>Promise基础</h4><p>1.Promise是为异步操作的结果所准备的占位符。函数可以返回一个Promise，而不必订阅一个事件或向函数传递一个回调参数。<br><a id="more"></a><br>2.then()方法在所有的 Promise 上都存在，并且接受两个参数。第一个参数是Promise被完成时要调用的函数，与异步操作关联的任何附加数据都会被传入这个完成函数。第二个参数则是Promise被拒绝时要调用的函数，与完成函数相似，拒绝函数会被传入与拒绝相关联的任何附加数据。传递给then()的两个参数都是可选的，因此你可以监听完成与拒绝的任意组合形式。<br>3.用这种方式实现then()法的任何对象都被称为一个thenable。所有的Promise都是thenable，反之则未必成立。<br>4.Promis也具有一个catch()方法，其行为等同于只传递拒绝处理函数给then()。<br>5.then()与catch()背后的意图是让你组合使用它们来正确处理异步操作的结果。此系统要优于事件与回调函数，因为它让操作是成功还是失败变得完全清晰（事件模式倾向于在出错时不被触发，而在回调函数模式中你必须始终记得检查错误参数）。只需知道若你未给Promise附加拒绝处理函数，所有的错误就会静默发生。建议始终附加一个拒绝处理函数，即使该处理程序只是用于打印错误日志。<br>6.即使完成或拒绝处理函数在Promise已经被解决之后才添加到作业队列，它们仍然会被执行。这允许你随时添加新的完成或拒绝处理函数，并保证它们会被调用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let promise = readFile(&quot;example.txt&quot;);</span><br><span class="line">// 原始的完成处理函数</span><br><span class="line">promise.then(function(contents) &#123;</span><br><span class="line">	console.log(contents);</span><br><span class="line">	// 现在添加另一个</span><br><span class="line">	promise.then(function(contents) &#123;</span><br><span class="line">		console.log(contents);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>每次调用then()或catch()都会创建一个新的作业，它会在Promise已决议时被执行。但这些作业最终会进入一个完全为Promise保留的作业队列。这个独立队列的确切细节对于理解如何使用Promise是不重要的，你只需理解作业队列通常来说是如何工作的。</p>
+<h4 id="创建未决的Promise"><a href="#创建未决的Promise" class="headerlink" title="创建未决的Promise"></a>创建未决的Promise</h4><p>1.新的Promise使用Promise构造器来创建。此构造器接受单个参数：一个被称为执行器（executor）的函数，包含初始化Promise的代码。该执行器会被传递两个名为resolve()与reject()的函数作为参数。resolve()函数在执行器成功结束时被调用，用于示意该Promise已经准备好被决议（resolved），而reject()函数则表明执行器的操作已失败。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">// Node.js 范例</span><br><span class="line">let fs = require(&quot;fs&quot;);</span><br><span class="line">function readFile(filename) &#123;</span><br><span class="line">	return new Promise(function(resolve, reject) &#123;</span><br><span class="line">		// 触发异步操作</span><br><span class="line">		fs.readFile(filename, &#123; encoding: &quot;utf8&quot; &#125;, function(err, contents) &#123;</span><br><span class="line">			// 检查错误</span><br><span class="line">			if (err) &#123;</span><br><span class="line">				reject(err);</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">			// 读取成功</span><br><span class="line">			resolve(contents);</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br><span class="line">let promise = readFile(&quot;example.txt&quot;);</span><br><span class="line">// 同时监听完成与拒绝</span><br><span class="line">promise.then(function(contents) &#123;</span><br><span class="line">	// 完成</span><br><span class="line">	console.log(contents);</span><br><span class="line">&#125;, function(err) &#123;</span><br><span class="line">	// 拒绝</span><br><span class="line">	console.error(err.message);</span><br><span class="line">&#125;);</span><br><span class="line">/*</span><br><span class="line">执行器会在readFile()被调用时立即运行。当resolve()或reject()在执行器内部被调用时，一个作业被添加到作业队列中，以便决议（resolve）这个 Promise 。这被称为作业调度（job scheduling），</span><br><span class="line">*/</span><br></pre></td></tr></table></figure><br>2.Promise的执行器会立即执行，早于源代码中在其之后的任何代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let promise = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	console.log(&quot;Promise&quot;);</span><br><span class="line">	resolve();</span><br><span class="line">&#125;);</span><br><span class="line">console.log(&quot;Hi!&quot;);</span><br><span class="line"></span><br><span class="line">//此代码的输出结果为：</span><br><span class="line">//Promise</span><br><span class="line">//Hi!</span><br></pre></td></tr></table></figure><br>3.调用resolve()触发了一个异步操作。传递给then()与catch()的函数会异步地被执行，并且它们也被添加到了作业队列（先进队列再执行）。</p>
+<h4 id="创建已决的Promise"><a href="#创建已决的Promise" class="headerlink" title="创建已决的Promise"></a>创建已决的Promise</h4><p>1.使用Promise.resolve()<br>Promise.resolve()方法接受单个参数并会返回一个处于完成态的Promise。这意味着没有任何作业调度会发生，并且你需要向Promise添加一个或更多的完成处理函数来提取这个参数值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let promise = Promise.resolve(42);</span><br><span class="line">promise.then(function(value) &#123;</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>2.使用Promise.reject()<br>你也可以使用Promise.reject()方法来创建一个已拒绝的Promise。此方法像Promise.resolve()一样工作，区别是被创建的Promise处于拒绝态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let promise = Promise.reject(42);</span><br><span class="line">promise.catch(function(value) &#123;</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>对挂起态或完成态的Promise使用Promise.resolve()没问题，会返回原Promise；对拒绝态的Promise使用Promise.reject()也没问题。而除此之外的情况全都会在原Promise上包装出一个新的Promise。</p>
+<h4 id="非Promise的Thenable"><a href="#非Promise的Thenable" class="headerlink" title="非Promise的Thenable"></a>非Promise的Thenable</h4><p>Promise.resolve()与Promise.reject()都能接受非Promise的thenable作为参数。当传入了非Promise的thenable时，这些方法会创建一个新的Promise，此Promise会在then()函数之后被调用。<br>当一个对象拥有一个能接受resolve与reject参数的then()方法，该对象就会被认为是一个非Promise的thenable<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">let thenable = &#123;</span><br><span class="line">	then: function(resolve, reject) &#123;</span><br><span class="line">		resolve(42);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line">let p1 = Promise.resolve(thenable);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">&#125;);</span><br><span class="line">/*</span><br><span class="line">在此例中，Promise.resolve()调用了thenable.then()，确定了这个thenable的Promise状态：由于resolve(42)在thenable.then()方法内部被调用，这个thenable的Promise状态也就被设为已完成。一个名为p1的新Promise被创建为完成态，并从thenable中接收到了值（此处为42），于是p1的完成处理函数就接收到一个值为42的参数。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<h4 id="执行器错误"><a href="#执行器错误" class="headerlink" title="执行器错误"></a>执行器错误</h4><p>如果在执行器内部抛出了错误，那么Promise的拒绝处理函数就会被调用。<br>执行器处理程序捕捉了抛出的任何错误，以简化这种常见处理。但在执行器内抛出的错误仅当存在拒绝处理函数时才会被报告，否则这个错误就会被隐瞒。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let promise = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	throw new Error(&quot;Explosion!&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">promise.catch(function(error) &#123;</span><br><span class="line">	console.log(error.message); // &quot;Explosion!&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h4 id="全局的Promise拒绝处理"><a href="#全局的Promise拒绝处理" class="headerlink" title="全局的Promise拒绝处理"></a>全局的Promise拒绝处理</h4><p>由于Promise的本质，判断一个Promise的拒绝是否已被处理并不直观。例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let rejected = Promise.reject(42);</span><br><span class="line">// 在此刻 rejected 不会被处理</span><br><span class="line">// 一段时间后……</span><br><span class="line">rejected.catch(function(value) &#123;</span><br><span class="line">	// 现在 rejected 已经被处理了</span><br><span class="line">	console.log(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>无论Promise是否已被解决，你都可以在任何时候调用then()或catch()并使它们正确工作，这导致很难准确知道一个Promise何时会被处理。此例中的Promise被立刻拒绝，但它后来才被处理。</p>
+<h5 id="Node-js的拒绝处理"><a href="#Node-js的拒绝处理" class="headerlink" title="Node.js的拒绝处理"></a>Node.js的拒绝处理</h5><p>在Node.js中，process对象上存在两个关联到Promise的拒绝处理的事件：<br>1.unhandledRejection：当一个Promise被拒绝、而在事件循环的一个轮次中没有任何拒绝处理函数被调用，该事件就会被触发；<br>2.rejectionHandled：若一个Promise被拒绝、并在事件循环的一个轮次之后再有拒绝处理函数被调用，该事件就会被触发。<br>这两个事件旨在共同帮助识别已被拒绝但未曾被处理promise。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let rejected;</span><br><span class="line">process.on(&quot;unhandledRejection&quot;, function(reason, promise) &#123;</span><br><span class="line">	console.log(reason.message); // &quot;Explosion!&quot;</span><br><span class="line">	console.log(rejected === promise); // true</span><br><span class="line">&#125;);</span><br><span class="line">rejected = Promise.reject(new Error(&quot;Explosion!&quot;));</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let rejected;</span><br><span class="line">process.on(&quot;rejectionHandled&quot;, function(promise) &#123;</span><br><span class="line">	console.log(rejected === promise); // true</span><br><span class="line">&#125;);</span><br><span class="line">rejected = Promise.reject(new Error(&quot;Explosion!&quot;));</span><br><span class="line">// 延迟添加拒绝处理函数</span><br><span class="line">setTimeout(function() &#123;</span><br><span class="line">	rejected.catch(function(value) &#123;</span><br><span class="line">		console.log(value.message); // &quot;Explosion!&quot;</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;, 1000)</span><br><span class="line">/*</span><br><span class="line">此处的rejectionHandled事件在拒绝处理函数最终被调用时触发。若在rejected被创建后直接将拒绝处理函数附加到它上面，那么此事件就不会被触发。因为立即附加的拒绝处理函数在rejected被创建的事件循环的同一个轮次内就会被调用，这样rejectionHandled就不会起作用。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure><br>为了正确追踪潜在的未被处理的拒绝，使用rejectionHandled与unhandledRejection事件就能保持包含这些Promise的一个列表，之后等待一段时间再检查此列表。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let possiblyUnhandledRejections = new Map();</span><br><span class="line">// 当一个拒绝未被处理，将其添加到 map</span><br><span class="line">process.on(&quot;unhandledRejection&quot;, function(reason, promise) &#123;</span><br><span class="line">	possiblyUnhandledRejections.set(promise, reason);</span><br><span class="line">&#125;);</span><br><span class="line">process.on(&quot;rejectionHandled&quot;, function(promise) &#123;</span><br><span class="line">	possiblyUnhandledRejections.delete(promise);</span><br><span class="line">&#125;);</span><br><span class="line">setInterval(function() &#123;</span><br><span class="line">	possiblyUnhandledRejections.forEach(function(reason, promise) &#123;</span><br><span class="line">		console.log(reason.message ? reason.message : reason);</span><br><span class="line">		// 做点事来处理这些拒绝</span><br><span class="line">		handleRejection(promise, reason);</span><br><span class="line">	&#125;);</span><br><span class="line">	possiblyUnhandledRejections.clear();</span><br><span class="line">&#125;, 60000);</span><br></pre></td></tr></table></figure></p>
+<h5 id="浏览器的拒绝处理"><a href="#浏览器的拒绝处理" class="headerlink" title="浏览器的拒绝处理"></a>浏览器的拒绝处理</h5><p>浏览器同样能触发两个事件，来帮助识别未处理的拒绝。这两个事件会被window对象触发，并完全等效于Node.js的相关事件：<br>1.unhandledrejection：当一个Promise被拒绝、而在事件循环的一个轮次中没有任何拒绝处理函数被调用，该事件就会被触发；<br>2.rejectionHandled：若一个Promise被拒绝、并在事件循环的一个轮次之后再有拒绝处理函数被调用，该事件就会被触发。<br>Node.js的实现会传递分离的参数给事件处理函数，而浏览器事件的处理函数则只会接收到包含下列属性的一个对象：<br>type：事件的名称（”unhandledrejection”或”rejectionhandled”）；<br>promise：被拒绝的Promise对象；<br>reason：Promise中的拒绝值（拒绝原因）。<br>浏览器的实现中存在的另一个差异就是：拒绝值（reason）在两种事件中都可用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">let rejected;</span><br><span class="line">window.onunhandledrejection = function(event) &#123;</span><br><span class="line">	console.log(event.type); // &quot;unhandledrejection&quot;</span><br><span class="line">	console.log(event.reason.message); // &quot;Explosion!&quot;</span><br><span class="line">	console.log(rejected === event.promise); // true</span><br><span class="line">&#125;;</span><br><span class="line">window.onrejectionhandled = function(event) &#123;</span><br><span class="line">	console.log(event.type); // &quot;rejectionhandled&quot;</span><br><span class="line">	console.log(event.reason.message); // &quot;Explosion!&quot;</span><br><span class="line">	console.log(rejected === event.promise); // true</span><br><span class="line">&#125;;</span><br><span class="line">rejected = Promise.reject(new Error(&quot;Explosion!&quot;));</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let possiblyUnhandledRejections = new Map();</span><br><span class="line">// 当一个拒绝未被处理，将其添加到 map</span><br><span class="line">window.onunhandledrejection = function(event) &#123;</span><br><span class="line">	possiblyUnhandledRejections.set(event.promise, event.reason);</span><br><span class="line">&#125;;</span><br><span class="line">window.onrejectionhandled = function(event) &#123;</span><br><span class="line">	possiblyUnhandledRejections.delete(event.promise);</span><br><span class="line">&#125;;</span><br><span class="line">setInterval(function() &#123;</span><br><span class="line">	possiblyUnhandledRejections.forEach(function(reason, promise) &#123;</span><br><span class="line">		console.log(reason.message ? reason.message : reason);</span><br><span class="line">		// 做点事来处理这些拒绝</span><br><span class="line">		handleRejection(promise, reason);</span><br><span class="line">	&#125;);</span><br><span class="line">	possiblyUnhandledRejections.clear();</span><br><span class="line">&#125;, 60000);</span><br></pre></td></tr></table></figure></p>
+<h5 id="串联Promise"><a href="#串联Promise" class="headerlink" title="串联Promise"></a>串联Promise</h5><p>1.每次对then()或catch()的调用实际上创建并返回了另一个Promise，仅当前一个Promise被完成或拒绝时，后一个Promise才会被决议。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	console.log(value);</span><br><span class="line">&#125;).then(function() &#123;</span><br><span class="line">	console.log(&quot;Finished&quot;);</span><br><span class="line">&#125;);</span><br><span class="line">//42</span><br><span class="line">//Finished</span><br><span class="line">/*</span><br><span class="line">对p1.then()的调用返回了第二个Promise，又在这之上调用了then()。仅当第一个Promise已被决议后，第二个then()的完成处理函数才会被调用。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<h5 id="捕获错误"><a href="#捕获错误" class="headerlink" title="捕获错误"></a>捕获错误</h5><p>Promise链允许你捕获前一个Promise的完成或拒绝处理函数中发生的错误。为了确保能正确处理任意可能发生的错误，应当始终在Promise链尾部添加拒绝处理函数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	throw new Error(&quot;Boom!&quot;);</span><br><span class="line">&#125;).catch(function(error) &#123;</span><br><span class="line">	console.log(error.message); // &quot;Boom!&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="在Promise链中返回值"><a href="#在Promise链中返回值" class="headerlink" title="在Promise链中返回值"></a>在Promise链中返回值</h5><p>Promise链的另一重要方面是能从一个Promise传递数据给下一个Promise的能力。传递给执行器中的resolve()处理函数的参数，会被传递给对应Promise的完成处理函数，这点你前面已看到过了。你可以指定完成处理函数的返回值，以便沿着一个链继续传递数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	console.log(value); // &quot;42&quot;</span><br><span class="line">	return value + 1;</span><br><span class="line">&#125;).then(function(value) &#123;</span><br><span class="line">	console.log(value); // &quot;43&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="在Promise链中返回Promise"><a href="#在Promise链中返回Promise" class="headerlink" title="在Promise链中返回Promise"></a>在Promise链中返回Promise</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(43);</span><br><span class="line">&#125;);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	// 第一个完成处理函数</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">	return p2;</span><br><span class="line">&#125;).then(function(value) &#123;</span><br><span class="line">	// 第二个完成处理函数</span><br><span class="line">	console.log(value); // 43</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>关于此模式需认识的首要重点是第二个完成处理函数并未被添加到p2上，而是被添加到第三个Promise 。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	reject(43);</span><br><span class="line">&#125;);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	// 第一个完成处理函数</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">	return p2;</span><br><span class="line">&#125;).then(function(value) &#123;</span><br><span class="line">	// 第二个完成处理函数</span><br><span class="line">	console.log(value); // 永不被调用</span><br><span class="line">&#125;);</span><br><span class="line">//由于p2被拒绝了，第二个完成处理函数就永不被调用。</span><br></pre></td></tr></table></figure><br>从完成或拒绝处理函数中返回thenable，不会对Promise执行器何时被执行有所改变。第一个被定义的Promise将会首先运行它的执行器，接下来才轮到第二个Promise的执行器执行，以此类推。返回thenable只是让你能在Promise结果之外定义附加响应。你能通过在完成处理函数中创建一个新的Promise，来推迟完成处理函数的执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">p1.then(function(value) &#123;</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">	// 创建一个新的 promise</span><br><span class="line">	let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">		resolve(43);</span><br><span class="line">	&#125;);</span><br><span class="line">	return p2</span><br><span class="line">&#125;).then(function(value) &#123;</span><br><span class="line">	console.log(value); // 43</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>若你想等待前面的Promise被解决，之后才去触发另一个Promise，那么这种模式就非常有用。</p>
+<h4 id="响应多个Promise"><a href="#响应多个Promise" class="headerlink" title="响应多个Promise"></a>响应多个Promise</h4><h5 id="Promise-all-方法"><a href="#Promise-all-方法" class="headerlink" title="Promise.all()方法"></a>Promise.all()方法</h5><p>Promise.all()方法接收单个可迭代对象（如数组）作为参数，并返回一个Promise。这个可迭代对象的元素都是Promise，只有在它们都完成后，所返回的Promise才会被完成。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(43);</span><br><span class="line">&#125;);</span><br><span class="line">let p3 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(44);</span><br><span class="line">&#125;);</span><br><span class="line">let p4 = Promise.all([p1, p2, p3]);</span><br><span class="line">p4.then(function(value) &#123;</span><br><span class="line">	console.log(Array.isArray(value)); // true</span><br><span class="line">	console.log(value[0]); // 42</span><br><span class="line">	console.log(value[1]); // 43</span><br><span class="line">	console.log(value[2]); // 44</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>此处前面的每个Promise都用一个数值进行了决议，对Promise.all()的调用创建了新的Promisep4，在p1、p2与p3都被完成后，p4最终会也被完成。传递给p4的完成处理函数的结果是一个包含每个决议值（42、43与44）的数组，这些值的存储顺序保持了待决议的Promise的顺序（与完成的先后顺序无关），因此你可以将结果匹配到每个Promise。<br>若传递给Promise.all()的任意Promise被拒绝了，那么方法所返回的Promise就会立刻被拒绝，而不必等待其他的Promise结束：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	reject(43);</span><br><span class="line">&#125;);</span><br><span class="line">let p3 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(44);</span><br><span class="line">&#125;);</span><br><span class="line">let p4 = Promise.all([p1, p2, p3]);</span><br><span class="line">p4.catch(function(value) &#123;</span><br><span class="line">	console.log(Array.isArray(value)) // false</span><br><span class="line">	console.log(value); // 43</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h5 id="Promise-race-方法"><a href="#Promise-race-方法" class="headerlink" title="Promise.race()方法"></a>Promise.race()方法</h5><p>此方法也接受一个包含需监视的Promise的可迭代对象，并返回一个新的Promise，但一旦来源Promise中有一个被解决，所返回的Promise就会立刻被解决。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">let p1 = Promise.resolve(42);</span><br><span class="line">let p2 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(43);</span><br><span class="line">&#125;);</span><br><span class="line">let p3 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(44);</span><br><span class="line">&#125;);</span><br><span class="line">let p4 = Promise.race([p1, p2, p3]);</span><br><span class="line">p4.then(function(value) &#123;</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let p1 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">let p2 = Promise.reject(43);</span><br><span class="line">let p3 = new Promise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(44);</span><br><span class="line">&#125;);</span><br><span class="line">let p4 = Promise.race([p1, p2, p3]);</span><br><span class="line">p4.catch(function(value) &#123;</span><br><span class="line">	console.log(value); // 43</span><br><span class="line">&#125;);</span><br><span class="line">/*</span><br><span class="line">此处的p4被拒绝了，因为p2在Promise.race()被调用时已经处于拒绝态。尽管p1与p3都被完成，其结果仍然被忽略，因为这发生在p2被拒绝之后。</span><br><span class="line">*/</span><br></pre></td></tr></table></figure></p>
+<h4 id="继承Promise"><a href="#继承Promise" class="headerlink" title="继承Promise"></a>继承Promise</h4><p>正像其他内置类型，你可将一个Promise用作派生类的基类。这允许你自定义变异的Promise，在内置Promise的基础上扩展功能。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class MyPromise extends Promise &#123;</span><br><span class="line">	// 使用默认构造器</span><br><span class="line">	success(resolve, reject) &#123;</span><br><span class="line">		return this.then(resolve, reject);</span><br><span class="line">	&#125;</span><br><span class="line">	failure(reject) &#123;</span><br><span class="line">		return this.catch(reject);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">let promise = new MyPromise(function(resolve, reject) &#123;</span><br><span class="line">	resolve(42);</span><br><span class="line">&#125;);</span><br><span class="line">promise.success(function(value) &#123;</span><br><span class="line">	console.log(value); // 42</span><br><span class="line">&#125;).failure(function(value) &#123;</span><br><span class="line">	console.log(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h4 id="异步任务运行"><a href="#异步任务运行" class="headerlink" title="异步任务运行"></a>异步任务运行</h4><p>async关键字标明了此函数使用异步方式运行。await关键字则表示对于readFile(“config.json”)的函数调用应返回一个Promise，若返回类型不对，则会将其包装为Promise。await会在Promise被拒绝的情况下抛出错误，否则它将返回该Promise被决议的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let fs = require(&quot;fs&quot;);</span><br><span class="line">function readFile(filename) &#123;</span><br><span class="line">	return new Promise(function(resolve, reject) &#123;</span><br><span class="line">		fs.readFile(filename, function(err, contents) &#123;</span><br><span class="line">			if (err) &#123;</span><br><span class="line">				reject(err);</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				resolve(contents);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">(async function() &#123;</span><br><span class="line">	let contents = await readFile(&quot;config.json&quot;);</span><br><span class="line">	doSomethingWith(contents);</span><br><span class="line">	console.log(&quot;Done&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="代理与反射接口"><a href="#代理与反射接口" class="headerlink" title="代理与反射接口"></a>代理与反射接口</h3><p>通过调用new Proxy()，你可以创建一个代理用来替代另一个对象（被称为目标），这个代理对目标对象进行了虚拟，因此该代理与该目标对象表面上可以被当作同一个对象来对待。<br>代理允许你拦截在目标对象上的底层操作，而这原本是JS引擎的内部能力。拦截行为使用了一个能够响应特定操作的函数（被称为陷阱）。<br>被Reflect对象所代表的反射接口，是给底层操作提供默认行为的方法的集合，这些操作是能够被代理重写的。每个代理陷阱都有一个对应的反射方法，每个方法都与对应的陷阱函数同名，并且接收的参数也与之一致。<br>每个陷阱函数都可以重写JS对象的一个特定内置行为，允许你拦截并修改它。如果你仍然需要使用原先的内置行为，则可使用对应的反射接口方法。</p>
+<h4 id="创建一个简单的代理"><a href="#创建一个简单的代理" class="headerlink" title="创建一个简单的代理"></a>创建一个简单的代理</h4><p>当你使用Proxy构造器来创建一个代理时，需要传递两个参数：目标对象以及一个处理器（handler），后者是定义了一个或多个陷阱函数的对象。如果未提供陷阱函数，代理会对所有操作采取默认行为。</p>
+<p>set: 写入一个属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;</span><br><span class="line">	name: &quot;target&quot;</span><br><span class="line">&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	set(trapTarget, key, value, receiver) &#123;</span><br><span class="line">		// 忽略已有属性，避免影响它们</span><br><span class="line">		if (!trapTarget.hasOwnProperty(key)) &#123;</span><br><span class="line">			if (isNaN(value)) &#123;</span><br><span class="line">				throw new TypeError(&quot;Property must be a number.&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		// 添加属性</span><br><span class="line">		return Reflect.set(trapTarget, key, value, receiver);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">// 添加一个新属性</span><br><span class="line">proxy.count = 1;</span><br><span class="line">console.log(proxy.count); // 1</span><br><span class="line">console.log(target.count); // 1</span><br><span class="line">// 你可以为 name 赋一个非数值类型的值，因为该属性已经存在</span><br><span class="line">proxy.name = &quot;proxy&quot;;</span><br><span class="line">console.log(proxy.name); // &quot;proxy&quot;</span><br><span class="line">console.log(target.name); // &quot;proxy&quot;</span><br><span class="line">// 抛出错误</span><br><span class="line">proxy.anotherName = &quot;proxy&quot;;</span><br></pre></td></tr></table></figure></p>
+<p>get: 读取一个属性的值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">let proxy = new Proxy(&#123;&#125;, &#123;</span><br><span class="line">	get(trapTarget, key, receiver) &#123;</span><br><span class="line">		if (!(key in receiver)) &#123;</span><br><span class="line">			throw new TypeError(&quot;Property &quot; + key + &quot; doesn&apos;t exist.&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		return Reflect.get(trapTarget, key, receiver);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">// 添加属性的功能正常</span><br><span class="line">proxy.name = &quot;proxy&quot;;</span><br><span class="line">console.log(proxy.name); // &quot;proxy&quot;</span><br><span class="line">// 读取不存在属性会抛出错误</span><br><span class="line">console.log(proxy.nme); // 抛出错误</span><br></pre></td></tr></table></figure></p>
+<p>has: in运算符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;</span><br><span class="line">	name: &quot;target&quot;,</span><br><span class="line">	value: 42</span><br><span class="line">&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	has(trapTarget, key) &#123;</span><br><span class="line">		if (key === &quot;value&quot;) &#123;</span><br><span class="line">			return false;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			return Reflect.has(trapTarget, key);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(&quot;value&quot; in proxy); // false</span><br><span class="line">console.log(&quot;name&quot; in proxy); // true</span><br><span class="line">console.log(&quot;toString&quot; in proxy); // true</span><br></pre></td></tr></table></figure></p>
+<p>deleteProperty: delete运算符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;</span><br><span class="line">	name: &quot;target&quot;,</span><br><span class="line">	value: 42</span><br><span class="line">&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	deleteProperty(trapTarget, key) &#123;</span><br><span class="line">		if (key === &quot;value&quot;) &#123;</span><br><span class="line">			return false;</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			return Reflect.deleteProperty(trapTarget, key);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">// 尝试删除 proxy.value</span><br><span class="line">console.log(&quot;value&quot; in proxy); // true</span><br><span class="line">let result1 = delete proxy.value;</span><br><span class="line">console.log(result1); // false</span><br><span class="line">console.log(&quot;value&quot; in proxy); // true</span><br><span class="line">// 尝试删除 proxy.name</span><br><span class="line">console.log(&quot;name&quot; in proxy); // true</span><br><span class="line">let result2 = delete proxy.name;</span><br><span class="line">console.log(result2); // true</span><br><span class="line">console.log(&quot;name&quot; in proxy); // false</span><br></pre></td></tr></table></figure></p>
+<p>getPrototypeOf: Object.getPrototypeOf()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	getPrototypeOf(trapTarget) &#123;</span><br><span class="line">		return null;//返回null隐藏了代理对象的原型，并且使得该原型不可被修改</span><br><span class="line">	&#125;,</span><br><span class="line">	setPrototypeOf(trapTarget, proto) &#123;</span><br><span class="line">		return false;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">let targetProto = Object.getPrototypeOf(target);</span><br><span class="line">let proxyProto = Object.getPrototypeOf(proxy);</span><br><span class="line">console.log(targetProto === Object.prototype); // true</span><br><span class="line">console.log(proxyProto === Object.prototype); // false</span><br><span class="line">console.log(proxyProto); // null</span><br><span class="line">// 成功</span><br><span class="line">Object.setPrototypeOf(target, &#123;&#125;);</span><br><span class="line">// 抛出错误</span><br><span class="line">Object.setPrototypeOf(proxy, &#123;&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>setPrototypeOf: Object.setPrototypeOf()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	getPrototypeOf(trapTarget) &#123;</span><br><span class="line">		return Reflect.getPrototypeOf(trapTarget);</span><br><span class="line">	&#125;,</span><br><span class="line">	setPrototypeOf(trapTarget, proto) &#123;</span><br><span class="line">		return Reflect.setPrototypeOf(trapTarget, proto);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">let targetProto = Object.getPrototypeOf(target);</span><br><span class="line">let proxyProto = Object.getPrototypeOf(proxy);</span><br><span class="line">console.log(targetProto === Object.prototype); // true</span><br><span class="line">console.log(proxyProto === Object.prototype); // true</span><br><span class="line">// 成功</span><br><span class="line">Object.setPrototypeOf(target, &#123;&#125;);</span><br><span class="line">// 同样成功</span><br><span class="line">Object.setPrototypeOf(proxy, &#123;&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>isExtensible: Object.isExtensible()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	isExtensible(trapTarget) &#123;</span><br><span class="line">		return Reflect.isExtensible(trapTarget);</span><br><span class="line">	&#125;,</span><br><span class="line">	preventExtensions(trapTarget) &#123;</span><br><span class="line">		return Reflect.preventExtensions(trapTarget);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(Object.isExtensible(target)); // true</span><br><span class="line">console.log(Object.isExtensible(proxy)); // true</span><br><span class="line">Object.preventExtensions(proxy);</span><br><span class="line">console.log(Object.isExtensible(target)); // false</span><br><span class="line">console.log(Object.isExtensible(proxy)); // false</span><br></pre></td></tr></table></figure></p>
+<p>preventExtensions: Object.preventExtensions()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;&#125;;</span><br><span class="line">let proxy = new Proxy(target, &#123;</span><br><span class="line">	isExtensible(trapTarget) &#123;</span><br><span class="line">		return Reflect.isExtensible(trapTarget);</span><br><span class="line">	&#125;,</span><br><span class="line">	preventExtensions(trapTarget) &#123;</span><br><span class="line">		return false</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(Object.isExtensible(target)); // true</span><br><span class="line">console.log(Object.isExtensible(proxy)); // true</span><br><span class="line">Object.preventExtensions(proxy);</span><br><span class="line">console.log(Object.isExtensible(target)); // true</span><br><span class="line">console.log(Object.isExtensible(proxy)); // true</span><br></pre></td></tr></table></figure></p>
+<p>getOwnPropertyDescriptor: Object.getOwnPropertyDescriptor()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">let proxy = new Proxy(&#123;&#125;, &#123;</span><br><span class="line">	defineProperty(trapTarget, key, descriptor) &#123;</span><br><span class="line">		return Reflect.defineProperty(trapTarget, key, descriptor);</span><br><span class="line">	&#125;,</span><br><span class="line">	getOwnPropertyDescriptor(trapTarget, key) &#123;</span><br><span class="line">		return Reflect.getOwnPropertyDescriptor(trapTarget, key);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">Object.defineProperty(proxy, &quot;name&quot;, &#123;</span><br><span class="line">	value: &quot;proxy&quot;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(proxy.name); // &quot;proxy&quot;</span><br><span class="line">let descriptor = Object.getOwnPropertyDescriptor(proxy, &quot;name&quot;);</span><br><span class="line">console.log(descriptor.value); // &quot;proxy&quot;</span><br></pre></td></tr></table></figure></p>
+<p>defineProperty: Object.defineProperty()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">let proxy = new Proxy(&#123;&#125;, &#123;</span><br><span class="line">	defineProperty(trapTarget, key, descriptor) &#123;</span><br><span class="line">		if (typeof key === &quot;symbol&quot;) &#123;</span><br><span class="line">			return false;     //返回true，Object.defineProperty()会正常执行；返回false，则Object.defineProperty()会抛出错误。</span><br><span class="line">		&#125;</span><br><span class="line">		return Reflect.defineProperty(trapTarget, key, descriptor);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">Object.defineProperty(proxy, &quot;name&quot;, &#123;</span><br><span class="line">	value: &quot;proxy&quot;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(proxy.name); // &quot;proxy&quot;</span><br><span class="line">let nameSymbol = Symbol(&quot;name&quot;);</span><br><span class="line">// 抛出错误</span><br><span class="line">Object.defineProperty(proxy, nameSymbol, &#123;</span><br><span class="line">	value: &quot;proxy&quot;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure><br>你可以让陷阱函数返回true，同时不去调用Reflect.defineProperty()方法，这样Object.defineProperty()就会静默失败，如此便可在未实际去定义属性的情况下抑制运行错误。</p>
+<p>ownKeys: Object.keys、Object.getOwnPropertyNames()与Object.getOwnPropertySymbols()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">let proxy = new Proxy(&#123;&#125;, &#123;</span><br><span class="line">	ownKeys(trapTarget) &#123;</span><br><span class="line">		return Reflect.ownKeys(trapTarget).filter(key =&gt; &#123;</span><br><span class="line">			return typeof key !== &quot;string&quot; || key[0] !== &quot;_&quot;;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">let nameSymbol = Symbol(&quot;name&quot;);</span><br><span class="line">proxy.name = &quot;proxy&quot;;</span><br><span class="line">proxy._name = &quot;private&quot;;</span><br><span class="line">proxy[nameSymbol] = &quot;symbol&quot;;</span><br><span class="line">let names = Object.getOwnPropertyNames(proxy),</span><br><span class="line">keys = Object.keys(proxy);</span><br><span class="line">symbols = Object.getOwnPropertySymbols(proxy);</span><br><span class="line">console.log(names.length); // 1</span><br><span class="line">console.log(names[0]); // &quot;name&quot;</span><br><span class="line">console.log(keys.length); // 1</span><br><span class="line">console.log(keys[0]); // &quot;name&quot;</span><br><span class="line">console.log(symbols.length); // 1</span><br><span class="line">console.log(symbols[0]); // &quot;Symbol(name)&quot;</span><br></pre></td></tr></table></figure></p>
+<p>在所有的代理陷阱中，只有apply与construct要求代理目标对象必须是一个函数。</p>
+<p>apply: 调用一个函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">let target = function() &#123; return 42 &#125;,</span><br><span class="line">proxy = new Proxy(target, &#123;</span><br><span class="line">	apply: function(trapTarget, thisArg, argumentList) &#123;</span><br><span class="line">		return Reflect.apply(trapTarget, thisArg, argumentList);</span><br><span class="line">	&#125;,</span><br><span class="line">	construct: function(trapTarget, argumentList) &#123;</span><br><span class="line">		return Reflect.construct(trapTarget, argumentList);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">// 使用了函数的代理，其目标对象会被视为函数</span><br><span class="line">console.log(typeof proxy); // &quot;function&quot;</span><br><span class="line">console.log(proxy()); // 42</span><br><span class="line">var instance = new proxy();</span><br><span class="line">console.log(instance instanceof proxy); // true</span><br><span class="line">console.log(instance instanceof target); // true</span><br></pre></td></tr></table></figure></p>
+<p>construct: 使用new调用一个函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 将所有参数相加</span><br><span class="line">function sum(...values) &#123;</span><br><span class="line">	return values.reduce((previous, current) =&gt; previous + current, 0);</span><br><span class="line">&#125;</span><br><span class="line">let sumProxy = new Proxy(sum, &#123;</span><br><span class="line">	apply: function(trapTarget, thisArg, argumentList) &#123;</span><br><span class="line">		argumentList.forEach((arg) =&gt; &#123;</span><br><span class="line">			if (typeof arg !== &quot;number&quot;) &#123;</span><br><span class="line">				throw new TypeError(&quot;All arguments must be numbers.&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		return Reflect.apply(trapTarget, thisArg, argumentList);</span><br><span class="line">	&#125;,</span><br><span class="line">	construct: function(trapTarget, argumentList) &#123;</span><br><span class="line">		throw new TypeError(&quot;This function can&apos;t be called with new.&quot;);</span><br><span class="line">		//return Reflect.construct(trapTarget, argumentsList);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line">console.log(sumProxy(1, 2, 3, 4)); // 10</span><br><span class="line">// 抛出错误</span><br><span class="line">console.log(sumProxy(1, &quot;2&quot;, 3, 4));</span><br><span class="line">// 同样抛出错误</span><br><span class="line">let result = new sumProxy();</span><br></pre></td></tr></table></figure></p>
+<h4 id="可被撤销的代理"><a href="#可被撤销的代理" class="headerlink" title="可被撤销的代理"></a>可被撤销的代理</h4><p>在被创建之后，代理通常就不能再从目标对象上被解绑。<br>你可以使用Proxy.revocable()方法来创建一个可被撤销的代理，该方法接受的参数与Proxy构造器的相同：一个目标对象、一个代理处理器，而返回值是包含下列属性的一个对象：</p>
+<ol>
+<li>proxy  ：可被撤销的代理对象；</li>
+<li>revoke  ：用于撤销代理的函数。<br>当revoke()函数被调用后，就不能再对该proxy对象进行更多操作，任何与该代理对象交互的意图都会触发代理的陷阱函数，从而抛出一个错误。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">let target = &#123;</span><br><span class="line">	name: &quot;target&quot;</span><br><span class="line">&#125;;</span><br><span class="line">let &#123; proxy, revoke &#125; = Proxy.revocable(target, &#123;&#125;);</span><br><span class="line">console.log(proxy.name); // &quot;target&quot;</span><br><span class="line">revoke();</span><br><span class="line">// 抛出错误</span><br><span class="line">console.log(proxy.name);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="用模块封装代码"><a href="#用模块封装代码" class="headerlink" title="用模块封装代码"></a>用模块封装代码</h3><p>模块（Modules）是使用不同方式加载的JS文件（与JS原先的脚本加载方式相对）。</p>
+<ol>
+<li>模块代码自动运行在严格模式下，并且没有任何办法跳出严格模式；</li>
+<li>在模块的顶级作用域创建的变量，不会被自动添加到共享的全局作用域，它们只会在模块顶级作用域的内部存在；</li>
+<li>模块顶级作用域的this值为undefined；</li>
+<li>模块不允许在代码中使用HTML风格的注释（这是JS来自于早期浏览器的历史遗留特性）；</li>
+<li>对于需要让模块外部代码访问的内容，模块必须导出它们；</li>
+<li>允许模块从其他模块导入绑定。</li>
+</ol>
+<h4 id="基本的导出"><a href="#基本的导出" class="headerlink" title="基本的导出"></a>基本的导出</h4><p>export放置在任意变量、函数或类声明之前，从模块中将它们公开出去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 导出数据</span><br><span class="line">export var color = &quot;red&quot;;</span><br><span class="line">export let name = &quot;Nicholas&quot;;</span><br><span class="line">export const magicNumber = 7;</span><br><span class="line">// 导出函数</span><br><span class="line">export function sum(num1, num2) &#123;</span><br><span class="line">	return num1 + num1;</span><br><span class="line">&#125;</span><br><span class="line">// 导出类</span><br><span class="line">export class Rectangle &#123;</span><br><span class="line">	constructor(length, width) &#123;</span><br><span class="line">		this.length = length;</span><br><span class="line">		this.width = width;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">// 此函数为模块私有</span><br><span class="line">function subtract(num1, num2) &#123;</span><br><span class="line">	return num1 - num2;</span><br><span class="line">&#125;</span><br><span class="line">// 定义一个函数……</span><br><span class="line">function multiply(num1, num2) &#123;</span><br><span class="line">	return num1 * num2;</span><br><span class="line">&#125;</span><br><span class="line">// ……稍后将其导出</span><br><span class="line">export &#123; multiply &#125;;</span><br></pre></td></tr></table></figure><br>此例中有几点需要注意。首先，除了export关键字之外，每个声明都与正常形式完全一样。每个被导出的函数或类都有名称，这是因为导出的函数声明与类声明必须要有名称。你不能使用这种语法来导出匿名函数或匿名类，除非使用了default关键字（在“模块的默认值”一节会论述）。<br>其次，细看一下multiply()函数，它并没有在定义时被导出。这是因为你不仅能导出声明，还可以导出引用（即代码最后一行）。<br>最后请注意，此例并未导出subtract()函数。此函数在模块外部不可访问，因为任意没有被显式导出的变量、函数或类都会在模块内保持私有。</p>
+<h4 id="基本的导入"><a href="#基本的导入" class="headerlink" title="基本的导入"></a>基本的导入</h4><p>import语句有两个部分，一是需要导入的标识符，二是需导入的标识符的来源模块。必须在其中包含文件扩展名。<br>当从模块导入了一个绑定时，该绑定表现得就像使用了const的定义。这意味着你不能再定义另一个同名变量（包括导入另一个同名绑定），也不能在对应的import语句之前使用此标识符（也就是要受暂时性死区限制），更不能修改它的值。</p>
+<h5 id="导入单个绑定"><a href="#导入单个绑定" class="headerlink" title="导入单个绑定"></a>导入单个绑定</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//单个导入</span><br><span class="line">import &#123; sum &#125; from &quot;./example.js&quot;;</span><br><span class="line">console.log(sum(1, 2)); // 3</span><br><span class="line">sum = 1; //出错</span><br></pre></td></tr></table></figure>
+<h5 id="导入多个绑定"><a href="#导入多个绑定" class="headerlink" title="导入多个绑定"></a>导入多个绑定</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 多个导入</span><br><span class="line">import &#123; sum, multiply, magicNumber &#125; from &quot;./example.js&quot;;</span><br><span class="line">console.log(sum(1, magicNumber)); // 8</span><br><span class="line">console.log(multiply(1, 2)); // 2</span><br></pre></td></tr></table></figure>
+<h5 id="完全导入一个模块"><a href="#完全导入一个模块" class="headerlink" title="完全导入一个模块"></a>完全导入一个模块</h5><p>将整个模块当作单一对象进行导入，该模块的所有导出都会作为对象的属性存在。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 完全导入</span><br><span class="line">import * as example from &quot;./example.js&quot;;</span><br><span class="line">console.log(example.sum(1,example.magicNumber)); // 8</span><br><span class="line">console.log(example.multiply(1, 2)); // 2</span><br></pre></td></tr></table></figure></p>
+<h5 id="模块语法的限制"><a href="#模块语法的限制" class="headerlink" title="模块语法的限制"></a>模块语法的限制</h5><p>1.无论你对同一个模块使用了多少次import语句，该模块都只会被执行一次。在导出模块的代码执行之后，已被实例化的模块就被保留在内存中，并随时都能被其他import所引用。<br>2.export与import都有一个重要的限制，那就是它们必须被用在其他语句或表达式的外部。只能在模块的顶级作用域使用。</p>
+<h5 id="导入绑定的一个微妙怪异点"><a href="#导入绑定的一个微妙怪异点" class="headerlink" title="导入绑定的一个微妙怪异点"></a>导入绑定的一个微妙怪异点</h5><p>ES6的import语句为变量、函数与类创建了只读绑定，而不像普通变量那样简单引用了原始绑定。尽管导入绑定的模块无法修改绑定的值，但负责导出的模块却能做到这一点。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export var name = &quot;Nicholas&quot;;</span><br><span class="line">export function setName(newName) &#123;</span><br><span class="line">	name = newName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>当你导入了这两个绑定后，setName()函数还可以改变name的值：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import &#123; name, setName &#125; from &quot;./example.js&quot;;</span><br><span class="line">console.log(name); // &quot;Nicholas&quot;</span><br><span class="line">setName(&quot;Greg&quot;);</span><br><span class="line">console.log(name); // &quot;Greg&quot;</span><br><span class="line">name = &quot;Nicholas&quot;; // error</span><br></pre></td></tr></table></figure><br>调用setName(“Greg”)会回到导出setName()的模块内部，并在那里执行，从而将name设置为”Greg”。注意这个变化会自动反映到所导入的name绑定上，这是因为绑定的name是导出的name标识符的本地名称，二者并非同一个事物。外部模块导入的name变量与在example.js模块内部的name变量对比，前者是对于后者的只读引用，会始终反映出后者的变化。就算后者的值在负责导出的模块中发生了变化，这种绑定关系也不会被破坏。模块导出与导入的绑定机制，与写在一个文件或模块内的代码是不同的。</p>
+<h5 id="重命名导出与导入"><a href="#重命名导出与导入" class="headerlink" title="重命名导出与导入"></a>重命名导出与导入</h5><p>1.假设你想用不同的名称来导出一个函数，你可以使用as关键字来指定新的名称，以便在模块外部用此名称指代目标函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function sum(num1, num2) &#123;</span><br><span class="line">	return num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line">export &#123; sum as add &#125;;</span><br></pre></td></tr></table></figure><br>2.假若模块导入函数时想使用另一个名称，同样也可以用as关键字：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import &#123; add as sum &#125; from &quot;./example.js&quot;;</span><br><span class="line">console.log(typeof add); // &quot;undefined&quot;</span><br><span class="line">console.log(sum(1, 2)); // 3</span><br></pre></td></tr></table></figure></p>
+<h4 id="模块的默认值"><a href="#模块的默认值" class="headerlink" title="模块的默认值"></a>模块的默认值</h4><h5 id="导出默认值"><a href="#导出默认值" class="headerlink" title="导出默认值"></a>导出默认值</h5><p>模块的默认值（default value）是使用default关键字所指定的单个变量、函数或类，而你在每个模块中只能设置一个默认导出，将default关键字用于多个导出会是语法错误。<br>1.将一个函数作为默认值进行了导出，default关键字标明了这是一个默认导出。此函数并不需要有名称<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export default function(num1, num2) &#123;</span><br><span class="line">	return num1 + num2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>2.export default后面放置一个标识符，以指定默认的导出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function sum(num1, num2) &#123;</span><br><span class="line">	return num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line">export default sum;</span><br></pre></td></tr></table></figure><br>3.使用重命名语法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function sum(num1, num2) &#123;</span><br><span class="line">	return num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line">export &#123; sum as default &#125;;</span><br></pre></td></tr></table></figure><br>default标识符有特别含义，既作为重命名导出，又标明了模块需要使用的默认值。由于default在JS中是一个关键字，它就不能被用作变量、函数或类的名称（但它可以被用作属性名称）。因此使用default来重命名一个导出是个特例，与非默认导出的语法保持了一致性。若你想用单个语句一次性进行多个导出，并要求包含默认导出，这种语法就非常有用。</p>
+<h5 id="导入默认值"><a href="#导入默认值" class="headerlink" title="导入默认值"></a>导入默认值</h5><p>1.从一个模块中导入默认值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// 导入默认值</span><br><span class="line">import sum from &quot;./example.js&quot;;</span><br><span class="line">console.log(sum(1, 2)); // 3</span><br></pre></td></tr></table></figure><br>2.对于既导出了默认值、又导出了一个或更多非默认的绑定的模块，你可以使用单个语句来导入它的所有导出绑定。<br>逗号将默认的本地名称与非默认的名称分隔开，后者仍旧被花括号所包裹。要记住在import语句中默认名称必须位于非默认名称之前。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//example.js</span><br><span class="line">export let color = &quot;red&quot;;</span><br><span class="line">export default function(num1, num2) &#123;</span><br><span class="line">	return num1 + num2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//test.js</span><br><span class="line">import sum, &#123; color &#125; from &quot;./example.js&quot;;</span><br><span class="line">console.log(sum(1, 2)); // 3</span><br><span class="line">console.log(color); // &quot;red&quot;</span><br></pre></td></tr></table></figure><br>3.使用重命名语法进行默认值的导入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 等价于上个例子</span><br><span class="line">import &#123; default as sum, color &#125; from &quot;example&quot;;</span><br><span class="line">console.log(sum(1, 2)); // 3</span><br><span class="line">console.log(color); // &quot;red&quot;</span><br></pre></td></tr></table></figure></p>
+<h5 id="绑定的再导出"><a href="#绑定的再导出" class="headerlink" title="绑定的再导出"></a>绑定的再导出</h5><p>将当前模块已导入的内容重新再导出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export &#123; sum as add &#125; from &quot;./example.js&quot;;</span><br><span class="line"></span><br><span class="line">//将来自另一个模块的所有值完全导出</span><br><span class="line">export * from &quot;./example.js&quot;;</span><br></pre></td></tr></table></figure><br>使用完全导出，就可以导出目标模块的默认值及其所有具名导出，但这可能影响你从当前模块所能导出的值。例如，假设example.js具有一个默认导出，当你使用这种语法时，你就无法为当前模块另外再定义一个默认导出。</p>
+<h5 id="无绑定的导入"><a href="#无绑定的导入" class="headerlink" title="无绑定的导入"></a>无绑定的导入</h5><p>有些模块也许没有进行任何导出，相反只是修改全局作用域的对象。尽管这种模块的顶级变量、函数或类最终并不会自动被加入全局作用域，但这并不意味着该模块无法访问全局作用域。诸如Array与Object之类的内置对象的共享定义在模块内部是可访问的，并且对于这些对象的修改会反映到其他模块中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// 没有导出与导入的模块</span><br><span class="line">Array.prototype.pushAll = function(items) &#123;</span><br><span class="line">	// items 必须是一个数组</span><br><span class="line">	if (!Array.isArray(items)) &#123;</span><br><span class="line">		throw new TypeError(&quot;Argument must be an array.&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	// 使用内置的 push() 与扩展运算符</span><br><span class="line">	return this.push(...items);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>这是一个有效的模块，尽管此处没有任何导出与导入。此代码可以作为模块或脚本来使用。由于它没有导出任何东西，你可以使用简化的导入语法来执行此模块的代码，而无须导入任何绑定.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import &quot;./example.js&quot;;</span><br><span class="line">let colors = [&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;];</span><br><span class="line">let items = [];</span><br><span class="line">items.pushAll(colors);</span><br></pre></td></tr></table></figure><br>此代码导入并执行了包含pushAll()的模块，于是pushAll()就被添加到数组的原型上。这意味着现在pushAll()在当前模块内的所有数组上都可用。</p>
+<h4 id="加载模块"><a href="#加载模块" class="headerlink" title="加载模块"></a>加载模块</h4><h5 id="在Web浏览器中使用模块"><a href="#在Web浏览器中使用模块" class="headerlink" title="在Web浏览器中使用模块"></a>在Web浏览器中使用模块</h5><p>1.在script标签中使用模块<br>为了支持模块，添加了”module”值作为type的选项。将type设置为”module”，就告诉浏览器要将内联代码或是指定文件中的代码当作模块，而不是当作脚本。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- load a module JavaScript file --&gt;</span><br><span class="line">&lt;script type=&quot;module&quot; src=&quot;module.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- include a module inline --&gt;</span><br><span class="line">&lt;script type=&quot;module&quot;&gt;</span><br><span class="line">import &#123; sum &#125; from &quot;./example.js&quot;;</span><br><span class="line">let result = sum(1, 2);  //并未被暴露到全局，因为它只在使用&lt;script&gt;元素定义的这个模块内部存在，因此也没有被添加为window对象的属性。</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure><br>你可能已经注意到”module”并不是与”text/javascript”相似的内容类型。模块JS文件的内容类型与脚本JS文件相同，因此不可能依据文件的内容类型将它们完全区别开来。此外，当type属性无法辨认时，浏览器就会忽略<script>元素，因此不支持模块的浏览器也就会自动忽略<script type="module">声明，从而提供良好的向下兼容性。</p>
+<p>2.Web浏览器中的模块加载次序<br>模块相对脚本的独特之处在于：它们能使用import来指定必须要加载的其他文件，以保证正确执行。为了支持此功能，<script type="module">总是表现得像是已经应用了defer属性。<br>(defer属性规定是否对脚本执行进行延迟，直到页面加载为止。如果您的脚本不会改变文档的内容，可将defer属性加入到<script>标签中，以便加快处理文档的速度。因为浏览器知道它将能够安全地读取文档的剩余部分而不用执行脚本，它将推迟对脚本的解释，直到文档已经显示给用户为止。)<br>defer属性是加载脚本文件时的可选项，但在加载模块文件时总是自动应用的。当HTML解析到拥有src属性的<script type="module">标签时，就会立即开始下载模块文件，但并不会执行它，直到整个网页文档全部解析完为止。模块也会按照它们在HTML文件中出现的顺序依次执行，这意味着第一个<script type="module">总是保证在第二个之前执行，即使其中有些模块不是用src指定而是包含了内联脚本。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- this will execute first --&gt;</span><br><span class="line">&lt;script type=&quot;module&quot; src=&quot;module1.js&quot;&gt;&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- this will execute second --&gt;</span><br><span class="line">&lt;script type=&quot;module&quot;&gt;</span><br><span class="line">import &#123; sum &#125; from &quot;./example.js&quot;;</span><br><span class="line">let result = sum(1, 2);</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- this will execute third --&gt;</span><br><span class="line">&lt;script type=&quot;module&quot; src=&quot;module2.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure><br>每个import语句又会触发一次fetch（无论是从网络还是从缓存中获取），并且在所有用import导入的资源被加载与执行完毕之前，没有任何模块会被执行。<br>所有模块，无论是用<script type="module">显式包含的，还是用import隠式包含的，都会依照次序加载与执行。在前面的范例中，完整的加载次序是：<br>1.下载并解析module1.js；<br>2.递归下载并解析在module1.js中使用import导入的资源；<br>3.解析内联模块；<br>4.递归下载并解析在内联模块中使用import导入的资源；<br>5.下载并解析module2.js；<br>6.递归下载并解析在module2.js中使用import导入的资源。<br>一旦加载完毕，直到页面文档被完整解析之前，都不会有任何代码被执行。在文档解析完毕后，会发生下列行为<br>1.递归执行module1.js导入的资源；<br>2.执行module1.js；<br>3.递归执行内联模块导入的资源；<br>4.执行内联模块；<br>5.递归执行module2.js导入的资源；<br>6.执行module2.js。<br>注意内联模块除了不必先下载代码之外，与其他两个模块的行为一致，加载import的资源与执行模块的次序都是完全一样的</p>
+<p><script type="module">上的defer属性总是会被忽略，因为它已经应用了该属性。。</p>
+<p>3.Web浏览器中的异步模块加载<br>你或许已熟悉了<script>元素上的async属性。当配合脚本使用时，async会导致脚本文件在下载并解析完毕后就立即执行。但带有async的脚本在文档中的顺序却并不会影响脚本执行的次序，脚本总是会在下载完成后就立即执行，而无须等待包含它的文档解析完毕。<br>async属性也能同样被应用到模块上。在<script type="module">上使用async会导致模块的执行行为与脚本相似。唯一区别是模块中所有import导入的资源会在模块自身被执行前先下载。这保证了模块中所有需要的资源会在模块执行前被下载，你只是不能保证模块何时会执行。研究以下代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- no guarantee which one of these will execute first --&gt;</span><br><span class="line">&lt;script type=&quot;module&quot; async src=&quot;module1.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script type=&quot;module&quot; async src=&quot;module2.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure><br>此例中两个模块文件被异步加载了。仅查看代码就判断出那个模块会被先执行，这是不可能的。若module1.js首先结束下载（包括它的所有导入资源），那么它就会首先执行。而对于module2.js来说也是一样。</p>
+<h5 id="将模块作为Worker加载"><a href="#将模块作为Worker加载" class="headerlink" title="将模块作为Worker加载"></a>将模块作为Worker加载</h5><p>为了支持模块加载，HTML标准的开发者为这些worker构造器添加了第二个参数，此参数是一个有type属性的对象，该属性的默认值是”script”。你也可以将type设置为”module”以便加载模块文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 用模块方式加载 module.js</span><br><span class="line">let worker = new Worker(&quot;module.js&quot;, &#123; type: &quot;module&quot; &#125;);</span><br></pre></td></tr></table></figure><br>worker模块通常与worker脚本一致，但存在两点例外。首先，worker脚本被限制只能从同源的网页进行加载，而worker模块可以不受此限制。尽管worker模块具有相同的默认限制，但当响应头中包含恰当的跨域资源共享（Cross-OriginResourceSharing，CORS）时，就允许跨域加载文件。其次，worker脚本可以使用self.importScripts()方法来将额外脚本引入worker，而worker模块上的self.importScripts()却总会失败，因为应当换用import 。</p>
+<h5 id="浏览器模块说明符方案"><a href="#浏览器模块说明符方案" class="headerlink" title="浏览器模块说明符方案"></a>浏览器模块说明符方案</h5><p>浏览器要求模块说明符应当为下列格式之一：<br>1.以/为起始，表示从根目录开始解析；<br>2.以./为起始，表示从当前目录开始解析；<br>3.以../为起始，表示从父级目录开始解析；<br>4.URL 格式。</p>
+</script></p>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/21/es62/" rel="next" title="深入理解ES6（2）">
+                <i class="fa fa-chevron-left"></i> 深入理解ES6（2）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/25/mvo初体验和交换两个int变量/" rel="prev" title="mvo初体验和交换两个int变量">
+                mvo初体验和交换两个int变量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/uploads/head.jpeg" alt="Chris Han">
+          <p class="site-author-name" itemprop="name">Chris Han</p>
+           
+              <p class="site-description motion-element" itemprop="description">一人一世界</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise与异步编程"><span class="nav-number">1.</span> <span class="nav-text">Promise与异步编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Promise基础"><span class="nav-number">1.1.</span> <span class="nav-text">Promise基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建未决的Promise"><span class="nav-number">1.2.</span> <span class="nav-text">创建未决的Promise</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建已决的Promise"><span class="nav-number">1.3.</span> <span class="nav-text">创建已决的Promise</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非Promise的Thenable"><span class="nav-number">1.4.</span> <span class="nav-text">非Promise的Thenable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#执行器错误"><span class="nav-number">1.5.</span> <span class="nav-text">执行器错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全局的Promise拒绝处理"><span class="nav-number">1.6.</span> <span class="nav-text">全局的Promise拒绝处理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Node-js的拒绝处理"><span class="nav-number">1.6.1.</span> <span class="nav-text">Node.js的拒绝处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#浏览器的拒绝处理"><span class="nav-number">1.6.2.</span> <span class="nav-text">浏览器的拒绝处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#串联Promise"><span class="nav-number">1.6.3.</span> <span class="nav-text">串联Promise</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#捕获错误"><span class="nav-number">1.6.4.</span> <span class="nav-text">捕获错误</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在Promise链中返回值"><span class="nav-number">1.6.5.</span> <span class="nav-text">在Promise链中返回值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在Promise链中返回Promise"><span class="nav-number">1.6.6.</span> <span class="nav-text">在Promise链中返回Promise</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应多个Promise"><span class="nav-number">1.7.</span> <span class="nav-text">响应多个Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Promise-all-方法"><span class="nav-number">1.7.1.</span> <span class="nav-text">Promise.all()方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Promise-race-方法"><span class="nav-number">1.7.2.</span> <span class="nav-text">Promise.race()方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#继承Promise"><span class="nav-number">1.8.</span> <span class="nav-text">继承Promise</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步任务运行"><span class="nav-number">1.9.</span> <span class="nav-text">异步任务运行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理与反射接口"><span class="nav-number">2.</span> <span class="nav-text">代理与反射接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个简单的代理"><span class="nav-number">2.1.</span> <span class="nav-text">创建一个简单的代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可被撤销的代理"><span class="nav-number">2.2.</span> <span class="nav-text">可被撤销的代理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用模块封装代码"><span class="nav-number">3.</span> <span class="nav-text">用模块封装代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本的导出"><span class="nav-number">3.1.</span> <span class="nav-text">基本的导出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基本的导入"><span class="nav-number">3.2.</span> <span class="nav-text">基本的导入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#导入单个绑定"><span class="nav-number">3.2.1.</span> <span class="nav-text">导入单个绑定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入多个绑定"><span class="nav-number">3.2.2.</span> <span class="nav-text">导入多个绑定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#完全导入一个模块"><span class="nav-number">3.2.3.</span> <span class="nav-text">完全导入一个模块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模块语法的限制"><span class="nav-number">3.2.4.</span> <span class="nav-text">模块语法的限制</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入绑定的一个微妙怪异点"><span class="nav-number">3.2.5.</span> <span class="nav-text">导入绑定的一个微妙怪异点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重命名导出与导入"><span class="nav-number">3.2.6.</span> <span class="nav-text">重命名导出与导入</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模块的默认值"><span class="nav-number">3.3.</span> <span class="nav-text">模块的默认值</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#导出默认值"><span class="nav-number">3.3.1.</span> <span class="nav-text">导出默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导入默认值"><span class="nav-number">3.3.2.</span> <span class="nav-text">导入默认值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#绑定的再导出"><span class="nav-number">3.3.3.</span> <span class="nav-text">绑定的再导出</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#无绑定的导入"><span class="nav-number">3.3.4.</span> <span class="nav-text">无绑定的导入</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载模块"><span class="nav-number">3.4.</span> <span class="nav-text">加载模块</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在Web浏览器中使用模块"><span class="nav-number">3.4.1.</span> <span class="nav-text">在Web浏览器中使用模块</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chris Han</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+<br>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+本站总访问量 <span id="busuanzi_value_site_pv"></span> &nbsp&nbsp&nbsp
+您是第<span id="busuanzi_value_site_uv"></span>个来到的小伙伴
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
