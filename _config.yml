@@ -81,4 +81,4 @@ deploy:
   deploy:
   type: git
   repository: git@github.com:1072843095/1072843095.github.io.git
-  branch: source
+  branch: master
